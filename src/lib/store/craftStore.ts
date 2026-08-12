@@ -201,9 +201,28 @@ export function useCraftStore() {
     localStorage.setItem('craft_org', JSON.stringify(newOrg));
   };
 
-  const updateOrganisation = (updates: Partial<Organisation>) => {
+  const updateOrganisation = async (updates: Partial<Organisation>) => {
     const updated = { ...organisation, ...updates };
     saveOrganisation(updated);
+
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user && updated.id) {
+        await supabase
+          .from('organisations')
+          .update({
+            name: updated.name,
+            craft_type: updated.craft_type,
+            currency: updated.currency,
+          })
+          .eq('id', updated.id);
+      }
+    } catch (err) {
+      console.error('Error updating organisation in Supabase:', err);
+    }
   };
 
   // Recipe Handlers

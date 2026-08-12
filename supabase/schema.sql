@@ -270,14 +270,18 @@ RETURNS TRIGGER AS $$
 DECLARE
     new_org_id UUID;
     org_name_val TEXT;
+    craft_type_val TEXT;
+    currency_val TEXT;
     full_name_val TEXT;
 BEGIN
     org_name_val := COALESCE(new.raw_user_meta_data->>'organisation_name', 'Ma Savonnerie Artisanale');
+    craft_type_val := COALESCE(new.raw_user_meta_data->>'craft_type', 'savonnerie');
+    currency_val := COALESCE(new.raw_user_meta_data->>'currency', 'EUR');
     full_name_val := COALESCE(new.raw_user_meta_data->>'full_name', 'Artisan Savonnier');
 
     -- 1. Create a new Organisation
-    INSERT INTO public.organisations (name, craft_type)
-    VALUES (org_name_val, 'savonnerie')
+    INSERT INTO public.organisations (name, craft_type, currency)
+    VALUES (org_name_val, craft_type_val, currency_val)
     RETURNING id INTO new_org_id;
 
     -- 2. Create Profile linking User to Organisation
@@ -293,4 +297,5 @@ DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
     FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
 

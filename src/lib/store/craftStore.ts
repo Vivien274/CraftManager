@@ -580,6 +580,19 @@ export function useCraftStore() {
     }
   };
 
+  const updateProductionBatch = async (id: string, updates: Partial<ProductionBatch>) => {
+    const updated = batches.map((b) => (b.id === id ? { ...b, ...updates } : b));
+    setBatches(updated);
+    localStorage.setItem('craft_batches', JSON.stringify(updated));
+
+    try {
+      const supabase = createClient();
+      await supabase.from('production_batches').update(updates).eq('id', id);
+    } catch (e) {
+      console.warn('Supabase batch update offline:', e);
+    }
+  };
+
   const addExpense = async (exp: Omit<Expense, 'id' | 'organisation_id' | 'created_at'>) => {
     let newExp: Expense = {
       ...exp,
@@ -983,6 +996,7 @@ export function useCraftStore() {
     deleteRawMaterial,
     addProductionBatch,
     updateBatchStatus,
+    updateProductionBatch,
     addExpense,
     deleteExpense,
     addClient,

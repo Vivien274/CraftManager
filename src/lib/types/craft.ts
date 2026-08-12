@@ -108,6 +108,7 @@ export interface ProductionBatch {
   organisation_id: string;
   product_id: string;
   product?: Product;
+  product_name?: string;
   batch_number: string; // e.g. LOT-2026-001
   quantity_produced: number;
   production_date: string; // YYYY-MM-DD

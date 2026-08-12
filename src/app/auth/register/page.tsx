@@ -26,10 +26,12 @@ export default function RegisterPage() {
 
     try {
       const supabase = createClient();
+      const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}/auth/login` : undefined;
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
+          emailRedirectTo: redirectUrl,
           data: {
             organisation_name: organisationName,
             full_name: fullName,

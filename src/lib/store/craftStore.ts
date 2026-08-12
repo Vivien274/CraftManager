@@ -788,6 +788,143 @@ export function useCraftStore() {
     }
   };
 
+  const importTraceabilitySeed = async () => {
+    try {
+      const res = await fetch('/traceability_seed.json');
+      const data = await res.json();
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      // 1. Add Suppliers
+      const newSuppliers: Supplier[] = [];
+      for (const sName of data.suppliers) {
+        const sup: Supplier = {
+          id: `sup-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+          organisation_id: organisation.id,
+          name: sName,
+          created_at: new Date().toISOString(),
+        };
+        newSuppliers.push(sup);
+      }
+      setSuppliers((prev) => [...newSuppliers, ...prev]);
+
+      // 2. Add Raw Materials
+      const rmMap: Record<string, string> = {};
+      const newRM: RawMaterial[] = [];
+      for (const rmName of data.raw_materials) {
+        const rmId = `rm-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+        rmMap[rmName.toLowerCase()] = rmId;
+        newRM.push({
+          id: rmId,
+          organisation_id: organisation.id,
+          name: rmName,
+          category: rmName.toLowerCase().includes('huile')
+            ? 'Huiles Végétales'
+            : rmName.toLowerCase().includes('beurre')
+            ? 'Beurres'
+            : rmName.toLowerCase().includes('lait')
+            ? 'Additifs'
+            : 'Matière Première',
+          unit: 'g',
+          purchase_price: 15.0,
+          purchase_quantity: 1000,
+          cost_per_unit: 0.015,
+          stock_quantity: 5000,
+          min_stock_alert: 500,
+          created_at: new Date().toISOString(),
+        });
+      }
+      setRawMaterials((prev) => [...newRM, ...prev]);
+
+      // 3. Add Products
+      const prodMap: Record<string, string> = {};
+      const newProducts: Product[] = [];
+      for (const p of data.products) {
+        const prodId = `prod-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+        prodMap[p.name] = prodId;
+        newProducts.push({
+          id: prodId,
+          organisation_id: organisation.id,
+          name: p.name,
+          category: p.category,
+          sku: `SKU-${Math.floor(100 + Math.random() * 900)}`,
+          selling_price: 7.5,
+          packaging_cost: 0.5,
+          extra_costs: 0.3,
+          curing_days: p.curing_days,
+          stock_quantity: 25,
+          created_at: new Date().toISOString(),
+        });
+      }
+      setProducts((prev) => [...newProducts, ...prev]);
+
+      // 4. Add Batches
+      const newBatches: ProductionBatch[] = [];
+      for (const b of data.batches) {
+        const pId = prodMap[b.product_name] || newProducts[0]?.id || 'prod-1';
+        newBatches.push({
+          id: `batch-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+          organisation_id: organisation.id,
+          product_id: pId,
+          batch_number: b.batch_number,
+          quantity_produced: b.quantity_produced,
+          production_date: b.production_date,
+          curing_end_date: b.curing_end_date,
+          status: b.status,
+          notes: b.notes,
+          created_at: new Date().toISOString(),
+        });
+      }
+      setBatches((prev) => [...newBatches, ...prev]);
+
+      // Sync to Supabase if authenticated
+      if (user && organisation.id) {
+        for (const s of newSuppliers) {
+          await supabase.from('suppliers').insert({ name: s.name, organisation_id: organisation.id });
+        }
+        for (const rm of newRM) {
+          await supabase.from('raw_materials').insert({
+            name: rm.name,
+            category: rm.category,
+            unit: rm.unit,
+            purchase_price: rm.purchase_price,
+            purchase_quantity: rm.purchase_quantity,
+            stock_quantity: rm.stock_quantity,
+            organisation_id: organisation.id,
+          });
+        }
+        for (const p of newProducts) {
+          await supabase.from('products').insert({
+            name: p.name,
+            category: p.category,
+            selling_price: p.selling_price,
+            curing_days: p.curing_days,
+            stock_quantity: p.stock_quantity,
+            organisation_id: organisation.id,
+          });
+        }
+        for (const b of newBatches) {
+          await supabase.from('production_batches').insert({
+            product_id: b.product_id,
+            batch_number: b.batch_number,
+            quantity_produced: b.quantity_produced,
+            production_date: b.production_date,
+            curing_end_date: b.curing_end_date,
+            status: b.status,
+            notes: b.notes,
+            organisation_id: organisation.id,
+          });
+        }
+      }
+      return true;
+    } catch (e) {
+      console.error('Error importing traceability seed:', e);
+      return false;
+    }
+  };
+
   return {
     isLoaded,
     organisation,
@@ -802,6 +939,7 @@ export function useCraftStore() {
     orders,
     cart,
     updateOrganisation,
+    importTraceabilitySeed,
     addSupplier,
     addRecipe,
     updateRecipe,

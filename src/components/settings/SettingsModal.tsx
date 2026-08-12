@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Store, User, Coins, Tag, Save, CheckCircle2, X } from 'lucide-react';
+import { Store, User, Coins, Tag, Save, CheckCircle2, X, FileSpreadsheet } from 'lucide-react';
 import { useCraftStore } from '@/lib/store/craftStore';
 import { createClient } from '@/lib/supabase/client';
 import { CraftType, Organisation } from '@/lib/types/craft';
@@ -12,13 +12,15 @@ interface SettingsModalProps {
 }
 
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
-  const { organisation, updateOrganisation } = useCraftStore();
+  const { organisation, updateOrganisation, importTraceabilitySeed } = useCraftStore();
   const [name, setName] = useState(organisation.name || "L'Atelier des Restanques");
   const [craftType, setCraftType] = useState<CraftType>(organisation.craft_type || 'savonnerie');
   const [currency, setCurrency] = useState(organisation.currency || 'EUR');
   const [fullName, setFullName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [importing, setImporting] = useState(false);
 
   useEffect(() => {
     setName(organisation.name || "L'Atelier des Restanques");
@@ -27,8 +29,11 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user?.user_metadata?.full_name) {
-        setFullName(data.user.user_metadata.full_name);
+      if (data.user) {
+        setUserEmail(data.user.email || '');
+        if (data.user.user_metadata?.full_name) {
+          setFullName(data.user.user_metadata.full_name);
+        }
       }
     });
   }, [organisation, isOpen]);
@@ -171,6 +176,46 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             </div>
           </div>
 
+          {/* Import Traceability Document Section (Strictly restricted to savonneriecyaness@gmail.com) */}
+          {userEmail.toLowerCase() === 'savonneriecyaness@gmail.com' && (
+            <div className="pt-3 border-t border-slate-100">
+              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-extrabold text-xs text-amber-950 flex items-center gap-1.5">
+                    <FileSpreadsheet className="w-4 h-4 text-amber-600" />
+                    Importation Traçabilité Atelier
+                  </span>
+                  <span className="text-[10px] font-bold bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full">
+                    55 Lots détectés
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-600 leading-snug">
+                  Importer l'historique complet de votre fabrication (55 fournées, 23 formules, 49 ingrédients & 16 fournisseurs).
+                </p>
+                <button
+                  type="button"
+                  disabled={importing}
+                  onClick={async () => {
+                    setImporting(true);
+                    const ok = await importTraceabilitySeed();
+                    setImporting(false);
+                    if (ok) {
+                      setSavedSuccess(true);
+                      setTimeout(() => {
+                        setSavedSuccess(false);
+                        onClose();
+                      }, 1500);
+                    }
+                  }}
+                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white rounded-xl font-black text-xs shadow-md shadow-amber-500/20 flex items-center justify-center gap-2 transition cursor-pointer disabled:opacity-50"
+                >
+                  <FileSpreadsheet className="w-4 h-4" />
+                  {importing ? 'Importation des 55 lots en cours...' : '📥 Importer l\'Historique de Traçabilité'}
+                </button>
+              </div>
+            </div>
+          )}
+
           <div className="pt-2 flex items-center justify-end gap-2">
             <button
               type="button"
@@ -182,7 +227,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             <button
               type="submit"
               disabled={loading}
-              className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl font-extrabold shadow-md flex items-center gap-1.5 transition cursor-pointer"
+              className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-extrabold shadow-md flex items-center gap-1.5 transition cursor-pointer"
             >
               <Save className="w-4 h-4" />
               {loading ? 'Enregistrement...' : 'Enregistrer'}

@@ -1,0 +1,886 @@
+{
+  "suppliers": [
+    "Amazon",
+    "Aroma Zone",
+    "Carrefour",
+    "Greenweez",
+    "Le Petit Grassois",
+    "Les Anes De Monedies",
+    "Lidl",
+    "Marsotte",
+    "Moulin De Francois",
+    "Mystic",
+    "Naissance",
+    "Rameau D'Argent",
+    "Royal Bio",
+    "Salomiel",
+    "Sevenhills",
+    "Terra Olive"
+  ],
+  "raw_materials": [
+    "Acide stearique",
+    "Alcool cetylique",
+    "Alcool cétylique",
+    "Argile blanche",
+    "Argile jaune",
+    "Argile rose",
+    "Aroma zone 24emu0070lp",
+    "Aroma zone 25emuu007lp/2",
+    "Beurre cupucao",
+    "Beurre de cacao",
+    "Beurre de cupucao",
+    "Beurre de karité",
+    "Beurre de mangue",
+    "Btms",
+    "Cosgard",
+    "Eau demineralise",
+    "Glycerine végétale",
+    "Huile d'amande douce",
+    "Huile d'avocat",
+    "Huile d'avoine",
+    "Huile d'olive",
+    "Huile de coco",
+    "Huile de courge",
+    "Huile de jojoba",
+    "Huile de laurier",
+    "Huile de lin",
+    "Huile de rose musque",
+    "Huile de son de riz",
+    "Huile de tournesol",
+    "Lait 03/05/25 marsotte",
+    "Lait d'anesse",
+    "Lait de chèvre",
+    "Lait de chévre",
+    "Lait d’ânesse",
+    "Les anes de monedies",
+    "Miel",
+    "Olivem",
+    "Parfum",
+    "Parfum agrumes",
+    "Parfum fleurs de cerisier",
+    "Parfum lait d'avoine et miel",
+    "Parfum musc",
+    "Parfum pomme d'amour",
+    "Poudre d'avoine colloide",
+    "Poudre de guimauve",
+    "Poudre de noyau",
+    "Poudre de noyau d'olive",
+    "T6226 les anes de monedies",
+    "Vitamine e"
+  ],
+  "products": [
+    {
+      "name": "SAVON DOUCE ANESSE PARFUM FLEURS DE COTON",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Beurre de karité",
+        "Huile de coco",
+        "Huile d'avoine",
+        "Lait d’ânesse",
+        "Huile d'olive",
+        "Parfum"
+      ]
+    },
+    {
+      "name": "SAVON DOUCE ANESSE sans parfum",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Beurre de cacao",
+        "Huile de coco",
+        "Huile d'avoine",
+        "Lait d’ânesse",
+        "Huile d'olive"
+      ]
+    },
+    {
+      "name": "SAVONS TEST",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Beurre de cacao",
+        "Huile de coco",
+        "Huile d'olive",
+        "Huile de laurier",
+        "Parfum"
+      ]
+    },
+    {
+      "name": "SAVON DOUCE ANESSE sans",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Parfum",
+        "Beurre de cacao",
+        "Huile de coco",
+        "Huile d'avoine",
+        "Lait d’ânesse",
+        "Huile d'olive"
+      ]
+    },
+    {
+      "name": "TEST SAVON DOUCE ANESSE PARFUM",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Beurre de karité",
+        "Huile de coco",
+        "Huile d'avoine",
+        "Lait d’ânesse",
+        "Huile d'olive",
+        "Parfum"
+      ]
+    },
+    {
+      "name": "SAVONS",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Beurre de cacao",
+        "Huile de coco",
+        "Huile d'olive",
+        "Huile de laurier",
+        "Parfum"
+      ]
+    },
+    {
+      "name": "TEST SAVON LICORNE",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Beurre de karité",
+        "Huile de coco",
+        "Huile d'avoine",
+        "Lait d’ânesse",
+        "Huile d'olive",
+        "Parfum"
+      ]
+    },
+    {
+      "name": "TEST savon douce anesse parfum caramel cremeux",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Beurre de karité",
+        "Huile de coco",
+        "Huile d'avoine",
+        "Lait d’ânesse",
+        "Huile d'olive",
+        "Parfum"
+      ]
+    },
+    {
+      "name": "Savon douce chèvre",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Parfum lait d'avoine et miel",
+        "Beurre de karité",
+        "Huile de coco",
+        "Huile de jojoba",
+        "Huile de lin",
+        "Huile d'olive",
+        "Lait de chèvre",
+        "Parfum",
+        "Lait 03/05/25 marsotte"
+      ]
+    },
+    {
+      "name": "erreur",
+      "category": "Savons & Soins",
+      "curing_days": 0,
+      "ingredients": []
+    },
+    {
+      "name": "Test savon Douce anesse parfum barbe papa",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Beurre de karité",
+        "Huile de coco",
+        "Huile d'avoine",
+        "Lait d’ânesse",
+        "Huile d'olive",
+        "Parfum"
+      ]
+    },
+    {
+      "name": "shampoing douce crinière au lait d'anesse",
+      "category": "Savons & Soins",
+      "curing_days": 0,
+      "ingredients": [
+        "Parfum fleurs de cerisier",
+        "Lait d'anesse",
+        "Beurre de karité",
+        "Beurre de cacao",
+        "Glycerine végétale",
+        "Poudre de guimauve",
+        "Huile d'amande douce",
+        "Acide stearique",
+        "Parfum"
+      ]
+    },
+    {
+      "name": "Test masque visage",
+      "category": "Savons & Soins",
+      "curing_days": 0,
+      "ingredients": [
+        "Lait d'anesse",
+        "Huile de courge",
+        "Beurre de cupucao",
+        "Huile de son de riz",
+        "Argile rose",
+        "Miel",
+        "Vitamine e",
+        "Cosgard"
+      ]
+    },
+    {
+      "name": "Test creme corps solide",
+      "category": "Savons & Soins",
+      "curing_days": 0,
+      "ingredients": [
+        "Parfum pomme d'amour",
+        "Lait d'anesse",
+        "Beurre de cacao",
+        "Beurre de karité",
+        "Huile de jojoba",
+        "Huile de rose musque",
+        "Parfum",
+        "Cosgard"
+      ]
+    },
+    {
+      "name": "TEST gommage visage au lait d’Ânesse sans parfum",
+      "category": "Savons & Soins",
+      "curing_days": 0,
+      "ingredients": [
+        "Huile de tournesol",
+        "Huile de jojoba",
+        "Miel"
+      ]
+    },
+    {
+      "name": "Test Savon douce chèvre",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Parfum musc",
+        "Beurre de karité",
+        "Huile de coco",
+        "Huile de jojoba",
+        "Huile de lin",
+        "Huile d'olive",
+        "Lait de chèvre",
+        "Parfum"
+      ]
+    },
+    {
+      "name": "Savon tendresse mielleuse au lait de chèvre sans parfum",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Huile d'olive",
+        "Huile d'avocat",
+        "Beurre de karité",
+        "Huile de jojoba",
+        "Huile de coco",
+        "Argile jaune",
+        "Lait de chévre",
+        "Miel"
+      ]
+    },
+    {
+      "name": "Test",
+      "category": "Savons & Soins",
+      "curing_days": 0,
+      "ingredients": [
+        "Lait d'anesse",
+        "Miel",
+        "Huile de tournesol",
+        "Huile de jojoba",
+        "Eau demineralise",
+        "Beurre de mangue",
+        "Btms",
+        "Alcool cetylique",
+        "Poudre de noyau d'olive",
+        "Vitamine e",
+        "Cosgard",
+        "T6226 les anes de monedies",
+        "Poudre de noyau",
+        "Les anes de monedies"
+      ]
+    },
+    {
+      "name": "Test savon douce anesse parfum monoi peche",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Beurre de karité",
+        "Huile de coco",
+        "Huile d'avoine",
+        "Lait d’ânesse",
+        "Huile d'olive",
+        "Parfum"
+      ]
+    },
+    {
+      "name": "Test savon douce",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Beurre de karité",
+        "Huile de coco",
+        "Huile d'avoine",
+        "Lait d’ânesse",
+        "Huile d'olive",
+        "Parfum"
+      ]
+    },
+    {
+      "name": "Test masque 2 en 1 enfants au lait de chevre",
+      "category": "Savons & Soins",
+      "curing_days": 0,
+      "ingredients": [
+        "Lait de chèvre",
+        "Argile blanche",
+        "Poudre d'avoine colloide",
+        "Beurre cupucao",
+        "Huile d'amande douce",
+        "Glycerine végétale",
+        "Vitamine e",
+        "Cosgard"
+      ]
+    },
+    {
+      "name": "Savon test douce chèvre",
+      "category": "Savons & Soins",
+      "curing_days": 28,
+      "ingredients": [
+        "Parfum agrumes",
+        "Beurre de karité",
+        "Huile de coco",
+        "Huile de jojoba",
+        "Huile de lin",
+        "Huile d'olive",
+        "Lait de chèvre",
+        "Parfum"
+      ]
+    },
+    {
+      "name": "Test démaquillant au lait de chèvre parfum magniola/fdc",
+      "category": "Savons & Soins",
+      "curing_days": 0,
+      "ingredients": [
+        "Lait de chèvre",
+        "Beurre cupucao",
+        "Beurre de karité",
+        "Olivem",
+        "Alcool cétylique",
+        "Vitamine e",
+        "Cosgard",
+        "Parfum",
+        "Aroma zone 25emuu007lp/2",
+        "Aroma zone 24emu0070lp"
+      ]
+    }
+  ],
+  "batches": [
+    {
+      "batch_number": "LOT-N°1",
+      "product_name": "SAVON DOUCE ANESSE PARFUM FLEURS DE COTON",
+      "production_date": "2025-05-25",
+      "curing_end_date": "2025-06-22",
+      "quantity_produced": 35,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: 24BEV0032/1744 Aroma zone, 24 HV0152/9-01850 Aroma zone, AVAVAB001 royal bio, ts2413 les anes de monedies, 24HV010912 aroma zone, 21480428 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°2",
+      "product_name": "SAVON DOUCE ANESSE PARFUM FLEURS DE COTON",
+      "production_date": "2025-05-28",
+      "curing_end_date": "2025-06-25",
+      "quantity_produced": 50,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: MKDB026 ROYAL BIO, AVCOBO30 ROYAL BIO, AVAVAB001 royal bio, tsL48P1 les anes de monedies, AV0B49 ROYAL BIO, 21480428 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°3",
+      "product_name": "SAVON DOUCE ANESSE PARFUM FLEURS DE COTON",
+      "production_date": "2025-05-30",
+      "curing_end_date": "2025-06-27",
+      "quantity_produced": 50,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: MKDB026 ROYAL BIO, AVCOBO30 ROYAL BIO, AVAVAB001 royal bio, tsL47P3 les anes de monedies, AV0B49 ROYAL BIO, 21480428 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°4",
+      "product_name": "SAVON DOUCE ANESSE sans parfum",
+      "production_date": "2025-06-10",
+      "curing_end_date": "2025-07-08",
+      "quantity_produced": 30,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de cacao, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive. Réf Fournisseurs: Vrac.bio.com, AVCOBO30 ROYAL BIO, AVAVAB001 royal bio, t456P3 les anes de monedies, AV0B49 ROYAL BIO"
+    },
+    {
+      "batch_number": "LOT-N°5",
+      "product_name": "SAVON DOUCE ANESSE PARFUM FLEURS DE COTON",
+      "production_date": "2025-06-24",
+      "curing_end_date": "2025-07-22",
+      "quantity_produced": 50,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: MKDB026 ROYAL BIO, AVCOBO30 ROYAL BIO, AVAVAB001 royal bio, TSLS2P4 les anes de monedieS, 25002559 TERRA OLIVE BIO, 21480428 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°6",
+      "product_name": "SAVON DOUCE ANESSE sans parfum",
+      "production_date": "2025-07-16",
+      "curing_end_date": "2025-08-13",
+      "quantity_produced": 50,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de cacao, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive. Réf Fournisseurs: Vrac.bio.com, AVCOBO30 ROYAL BIO, AVAVAB001 royal bio, TSL49P4 les anes de monedies, 25002559 TERRA OLIVE BIO"
+    },
+    {
+      "batch_number": "LOT-N°7",
+      "product_name": "SAVONS TEST",
+      "production_date": "2025-07-20",
+      "curing_end_date": "2025-08-17",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de cacao, Huile de coco, Huile d'olive, Huile de laurier, Parfum. Réf Fournisseurs: DOUCE ALEP AGRUMES, 20, Vrac.bio.com, AVCOBO30 ROYAL BIO, 25002559 TERRA OLIVE BIO, avblaub008 royal bio, 21481203 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°8",
+      "product_name": "SAVON DOUCE ANESSE sans",
+      "production_date": "2025-08-02",
+      "curing_end_date": "2025-08-30",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum, Beurre de cacao, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive. Réf Fournisseurs: 40, Vrac.bio.com, AVCOBO30 ROYAL BIO, AVAVAB001 royal bio, TSL49P5 les anes de monedies, 25002559 TERRA OLIVE BIO"
+    },
+    {
+      "batch_number": "LOT-N°9",
+      "product_name": "SAVON DOUCE ANESSE PARFUM FLEURS DE COTON",
+      "production_date": "2025-08-02",
+      "curing_end_date": "2025-08-30",
+      "quantity_produced": 50,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: MKDB026 ROYAL BIO, AVCOBO30 ROYAL BIO, AVAVAB001 royal bio, TSL48P2 les anes de monedieS, E2500252 GARCIA CRUZ BIO, 21480428 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°10",
+      "product_name": "TEST SAVON DOUCE ANESSE PARFUM",
+      "production_date": "2025-09-01",
+      "curing_end_date": "2025-09-29",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: POTION magique, 30, MKDB026 ROYAL BIO, AVCOBO30 ROYAL BIO, 50555411915813 MYSTIC MOMENT, TSL49P2 les anes de monedieS, E2500252 GARCIA CRUZ BIO, 21480428 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°11",
+      "product_name": "TEST SAVON DOUCE ANESSE PARFUM",
+      "production_date": "2025-09-14",
+      "curing_end_date": "2025-10-12",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: POTION magique, 30, MKDB026 ROYAL BIO, AVCOBO30 ROYAL BIO, 50555411915813 MYSTIC MOMENT, TSls2p2 les anes de monedieS, E2500252 GARCIA CRUZ BIO, 21480428 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°12",
+      "product_name": "SAVONS",
+      "production_date": "2025-11-11",
+      "curing_end_date": "2025-12-09",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de cacao, Huile de coco, Huile d'olive, Huile de laurier, Parfum. Réf Fournisseurs: DOUCE ALEP parfum jasmin frangipanier, 30, Vrac.bio.com, 25av0193/1 aroma zone, E2500252 GARCIA CRUZ BIO, avblaub008 royal bio, 21481203 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°13",
+      "product_name": "SAVON DOUCE ANESSE PARFUM FLEURS DE COTON",
+      "production_date": "2025-11-11",
+      "curing_end_date": "2025-12-09",
+      "quantity_produced": 50,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: MKDB026 ROYAL BIO, 25hvo193/1 aroma zone, 25HV0069/3, TSL52P1 les anes de monedieS, E2500252 GARCIA CRUZ BIO, 21480428 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°14",
+      "product_name": "SAVON DOUCE ANESSE PARFUM FLEURS DE COTON",
+      "production_date": "2025-11-30",
+      "curing_end_date": "2025-12-28",
+      "quantity_produced": 50,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: MKDB026 ROYAL BIO, be111j504 sevenkills, 25HV0069/3, T6 13 8/t612-3/t6-17-5 les anes de monedieS, E2500252 GARCIA CRUZ BIO, 21481030 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°15",
+      "product_name": "SAVON DOUCE ANESSE sans parfum",
+      "production_date": "2025-12-03",
+      "curing_end_date": "2025-12-31",
+      "quantity_produced": 50,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de cacao, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive. Réf Fournisseurs: Vrac.bio.com, be111j504 sevenkills, 4596002 mystic moment, t6-12-4/t6-17-7/t6-17-2les anes de monedies, 5032668 lidl bio"
+    },
+    {
+      "batch_number": "LOT-N°16",
+      "product_name": "TEST SAVON LICORNE",
+      "production_date": "2025-12-30",
+      "curing_end_date": "2026-01-27",
+      "quantity_produced": 12,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: MKDB026 ROYAL BIO, be111j504 sevenkills, 25HV0069/3, T6-15-23 les anes de monedieS, 5032668 LIDL BIO, 21480307 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°17",
+      "product_name": "SAVONS",
+      "production_date": "2026-01-14",
+      "curing_end_date": "2026-02-11",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de cacao, Huile de coco, Huile d'olive, Huile de laurier, Parfum. Réf Fournisseurs: DOUCE ALEP parfum jasmin frangipanier, 30, Vrac.bio.com, 25hv193/1, aroma zone, 5032668 lidl bio, avblaub008 royal bio, 21481203 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°18",
+      "product_name": "TEST savon douce anesse parfum caramel cremeux",
+      "production_date": "2026-01-21",
+      "curing_end_date": "2026-02-18",
+      "quantity_produced": 6,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: 1152521025 naissance, bc111j504 sevenhills bio, 4596002 mystic moment, TSL52P1 les anes de monedieS, 5032668 lidl bio, 21480428 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°19",
+      "product_name": "TEST savon douce anesse parfum caramel cremeux",
+      "production_date": "2026-01-23",
+      "curing_end_date": "2026-02-20",
+      "quantity_produced": 6,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: 1152521025 naissance, bc111j504 sevenhills bio, 4596002 mystic moment, TSL52P1 les anes de monedieS, 5032823 lidl bio, 21480428 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°20",
+      "product_name": "Savon douce chèvre",
+      "production_date": "2026-01-24",
+      "curing_end_date": "2026-02-21",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum lait d'avoine et miel, Beurre de karité, Huile de coco, Huile de jojoba, Huile de lin, Huile d'olive, Lait de chèvre, Parfum. Réf Fournisseurs: 50, 1152521025 naissance, bc111j504 sevenhills bio, avjb046 royal bio, 2505-22a CAUVIN BIO, 5032823 lidl bio, lai 020001 marsotte, 21470527"
+    },
+    {
+      "batch_number": "LOT-N°21",
+      "product_name": "Savon douce chèvre",
+      "production_date": "2026-01-28",
+      "curing_end_date": "2026-02-25",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum lait d'avoine et miel, Beurre de karité, Huile de coco, Huile de jojoba, Huile de lin, Huile d'olive, Lait de chèvre, Parfum. Réf Fournisseurs: 27, 1152521025 naissance, bc111j504 sevenhills bio, avjb046 royal bio, l4d234 lidl bio, 5032823 lidl bio, lai 020001 marsotte, 21470527"
+    },
+    {
+      "batch_number": "LOT-N°22",
+      "product_name": "erreur",
+      "production_date": "2026-01-01",
+      "curing_end_date": "2026-01-29",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: . Réf Fournisseurs: /, /, /, /"
+    },
+    {
+      "batch_number": "LOT-N°23",
+      "product_name": "SAVON DOUCE ANESSE PARFUM FLEURS DE COTON",
+      "production_date": "2026-02-04",
+      "curing_end_date": "2026-03-04",
+      "quantity_produced": 50,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: 1152521025 naissance, be111j504 sevenhills, 4596002 mystic moment, t6-22-1/t6-21-12/t6-22-12 les anes de monedieS, 5032823 lidl bio, 21481030 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°24",
+      "product_name": "Test savon Douce anesse parfum barbe papa",
+      "production_date": "2026-02-15",
+      "curing_end_date": "2026-03-15",
+      "quantity_produced": 12,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: 1152521025 naissance, be111j504 sevenhills, 4596002 mystic moment, T6-15-8 les anes de monedieS, 5032823 lidl bio, 21481030 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°25",
+      "product_name": "shampoing douce crinière au lait d'anesse",
+      "production_date": "2026-02-22",
+      "curing_end_date": "2026-03-22",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum fleurs de cerisier, Lait d'anesse, Beurre de karité, Beurre de cacao, Glycerine végétale, Poudre de guimauve, Huile d'amande douce, Acide stearique, Parfum. Réf Fournisseurs: 10, T6 23 81 les anes de monedies, 1152521025 naissance, Vrac.bio.com, GV014 ROYAL BIO, B4 EXT SEC 0841QF AROMA ZONE, avab057 royal bio, 23DIV009CP14 AROMA ZONE, 21480513 LE PETIT GRASSOIS"
+    },
+    {
+      "batch_number": "LOT-N°26",
+      "product_name": "SAVON DOUCE ANESSE PARFUM FLEURS DE COTON",
+      "production_date": "2026-03-08",
+      "curing_end_date": "2026-04-05",
+      "quantity_produced": 20,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: 1152521025 naissance, be111j504 sevenhills, 4596002 mystic moment, t6 23 4 les anes de monedieS, 5032954, lidl bio, 21481030 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°27",
+      "product_name": "shampoing douce crinière au lait d'anesse",
+      "production_date": "2026-03-12",
+      "curing_end_date": "2026-04-09",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum fleurs de cerisier, Lait d'anesse, Beurre de karité, Beurre de cacao, Glycerine végétale, Poudre de guimauve, Huile d'amande douce, Acide stearique, Parfum. Réf Fournisseurs: 5, T6 15 25, les anes de monedies, 1152521025 naissance, Vrac.bio.com, GV014 ROYAL BIO, B4 EXT SEC 0841QF AROMA ZONE, avab057 royal bio, 23DIV009CP14 AROMA ZONE, 21480513 LE PETIT GRASSOIS"
+    },
+    {
+      "batch_number": "LOT-N°28",
+      "product_name": "SAVON DOUCE ANESSE sans parfum",
+      "production_date": "2026-03-20",
+      "curing_end_date": "2026-04-17",
+      "quantity_produced": 14,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de cacao, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive. Réf Fournisseurs: X0029VCT73 cacao venezuela, be111j504 sevenkills, 4596002 mystic moment, t6- 20 6 les anes de monedies, 5032954 lidl bio"
+    },
+    {
+      "batch_number": "LOT-N°29",
+      "product_name": "SAVONS",
+      "production_date": "2026-04-01",
+      "curing_end_date": "2026-06-01",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de cacao, Huile de coco, Huile d'olive, Huile de laurier, Parfum. Réf Fournisseurs: DOUCE ALEP parfum jasmin frangipanier, 15, X0029VCT73 cacao venezuela, be111j504 sevenkills, 5032954 lidl bio, avblaub008 royal bio, 21481203 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°30",
+      "product_name": "shampoing douce crinière au lait d'anesse",
+      "production_date": "2026-04-06",
+      "curing_end_date": "2026-05-04",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum fleurs de cerisier, Lait d'anesse, Beurre de karité, Beurre de cacao, Glycerine végétale, Poudre de guimauve, Huile d'amande douce, Acide stearique, Parfum. Réf Fournisseurs: 15, T6 23 10, les anes de monedies, 1152521025 naissance, Vrac.bio.com, GV014 ROYAL BIO, B4 EXT SEC 0841QF AROMA ZONE, avab057 royal bio, 23DIV009CP14 AROMA ZONE, 21480513 LE PETIT GRASSOIS"
+    },
+    {
+      "batch_number": "LOT-N°31",
+      "product_name": "Test masque visage",
+      "production_date": "2026-04-05",
+      "curing_end_date": "2026-05-03",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Lait d'anesse, Huile de courge, Beurre de cupucao, Huile de son de riz, Argile rose, Miel, Vitamine e, Cosgard. Réf Fournisseurs: au lait d'anesse sans parfum, 9, T6 23 10 les anes de monedies, deluxe lidl 25005044, mcoprb006 royal bio, AVARRSB009 ROYAL BIO, MY COSMETIK 22-22-S28, 05/02/26 salomiel, 0085301 aroma zone, 25cons007/401485 aroma zone"
+    },
+    {
+      "batch_number": "LOT-N°32",
+      "product_name": "Test creme corps solide",
+      "production_date": "2026-04-08",
+      "curing_end_date": "2026-05-06",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum pomme d'amour, Lait d'anesse, Beurre de cacao, Beurre de karité, Huile de jojoba, Huile de rose musque, Parfum, Cosgard. Réf Fournisseurs: 16, acide stearique, vitamine e, alcool cetylique, T6 23 10 les anes de monedies, 611/251217 cacao venezuela, 1152521025 naissance, aujb046 royal bio, avrmb028 royal bio, 23div0009lp/4 aroma zone, 0085301-1v aroma zone, 24emu0070lp aroma zone, 21490107 le petit grassois, 25cons007-4-01485 aroma zone"
+    },
+    {
+      "batch_number": "LOT-N°33",
+      "product_name": "TEST gommage visage au lait d’Ânesse sans parfum",
+      "production_date": "2026-04-09",
+      "curing_end_date": "2026-05-07",
+      "quantity_produced": 500,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Huile de tournesol, Huile de jojoba, Miel. Réf Fournisseurs: Lait d'anesse, beurre de mangue, glycerine vegetale, poudre de noyau d'olive, vitamine E, cosgard, T6 23 10 les anes de monedies, ba10142021 au moulin de francois, aujb046 royal bio, MMRB016 ROYAL BIO, gv014 royal bio, 25EXF0007QF AROMA ZONE, 05/02/26 salomiel, 0085301 aroma zone, 25cons007/401485 aroma zone"
+    },
+    {
+      "batch_number": "LOT-N°34",
+      "product_name": "Test Savon douce chèvre",
+      "production_date": "2026-04-10",
+      "curing_end_date": "2026-06-10",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum musc, Beurre de karité, Huile de coco, Huile de jojoba, Huile de lin, Huile d'olive, Lait de chèvre, Parfum. Réf Fournisseurs: 20, 1152521025 naissance, bc111j504 sevenhills bio, avjb046 royal bio, l4d234 lidl bio, 5033163 lidl bio, 03/05/25 marsotte, 21450427 le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°35",
+      "product_name": "Savon tendresse mielleuse au lait de chèvre sans parfum",
+      "production_date": "2026-04-21",
+      "curing_end_date": "2026-06-21",
+      "quantity_produced": 28,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Huile d'olive, Huile d'avocat, Beurre de karité, Huile de jojoba, Huile de coco, Argile jaune, Lait de chévre, Miel. Réf Fournisseurs: 5033163l57 lidl bio, 17/12 dom 33619 carrefour, 1152521025 naissance, avjb046 royal bio, bc111j504 sevenhills bio, mc ganna x0023lewab amazon, 03/05/25 (marsotte), 050226 (salomiel)"
+    },
+    {
+      "batch_number": "LOT-N°36",
+      "product_name": "Savon douce chèvre",
+      "production_date": "2026-04-22",
+      "curing_end_date": "2026-05-20",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum lait d'avoine et miel, Beurre de karité, Huile de coco, Huile de jojoba, Huile de lin, Huile d'olive, Lait de chèvre, Parfum, Lait 03/05/25 marsotte. Réf Fournisseurs: 30, 1152521025 naissance, bc111j504 sevenhills bio, avjb046 royal bio, l4d234 lidl bio, 50333163 lidl bio, 21470527"
+    },
+    {
+      "batch_number": "LOT-N°37",
+      "product_name": "Savon tendresse mielleuse au lait de chèvre sans parfum",
+      "production_date": "2026-05-03",
+      "curing_end_date": "2026-07-03",
+      "quantity_produced": 26,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Huile d'olive, Huile d'avocat, Beurre de karité, Huile de jojoba, Huile de coco, Argile jaune, Lait de chévre, Miel. Réf Fournisseurs: 5033163l57 lidl bio, 17/12 dom 33619 carrefour, 1152521025 naissance, avjb046 royal bio, bc111j504 sevenhills bio, mc ganna x0023lewab amazon, 03/05/25 (marsotte), 050226 (salomiel)"
+    },
+    {
+      "batch_number": "LOT-N°38",
+      "product_name": "Test",
+      "production_date": "2026-05-02",
+      "curing_end_date": "2026-05-30",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Lait d'anesse, Miel, Huile de tournesol, Huile de jojoba, Eau demineralise, Beurre de mangue, Btms, Alcool cetylique, Poudre de noyau d'olive, Vitamine e, Cosgard, T6226 les anes de monedies. Réf Fournisseurs: visage gommage lait d’ânesse, 300 gr, 050226 (salomiel), ba10142021 (au moulin de francois), avjb046 royal bio, carrefour, mmrb016 royal bio, 3311225 aroma zone, 24emv00707qf/1 aroma zone, 25exf0007qf/1 aroma zone, 0085301-1v aroma zone, 25cons007-4-01485 aroma zone"
+    },
+    {
+      "batch_number": "LOT-N°39",
+      "product_name": "Test savon douce anesse parfum monoi peche",
+      "production_date": "2026-05-03",
+      "curing_end_date": "2026-07-03",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: 1152521025 naissance, be111j504 sevenhills, 4596002 mystic moment, t6226 les anes de monedieS, 5032954, lidl bio, le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°41",
+      "product_name": "shampoing douce crinière au lait d'anesse",
+      "production_date": "2026-05-09",
+      "curing_end_date": "2026-06-06",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum fleurs de cerisier, Lait d'anesse, Beurre de karité, Beurre de cacao, Glycerine végétale, Poudre de guimauve, Huile d'amande douce, Acide stearique, Parfum. Réf Fournisseurs: 15, T6 1516 les anes de monedies, 1156950326 naissance, 626/251/0081 cacao venezuela, GV014 ROYAL BIO, 24 EXT SEC 0269QF AROMA ZONE, avab057 royal bio, 23DIV009CP14 AROMA ZONE, 21480513 LE PETIT GRASSOIS"
+    },
+    {
+      "batch_number": "LOT-N°42",
+      "product_name": "Test creme corps solide",
+      "production_date": "2026-05-14",
+      "curing_end_date": "2026-06-11",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum pomme d'amour, Lait d'anesse, Beurre de cacao, Beurre de karité, Huile de jojoba, Huile de rose musque, Parfum, Cosgard. Réf Fournisseurs: 18, acide stearique, vitamine e, alcool cetylique, T6 15 16 les anes de monedies, 611/251217 cacao venezuela, 1152521025 naissance, aujb046 royal bio, avrmb028 royal bio, 23div0009lp/4 aroma zone, 0085301-1v aroma zone, 24emu0070lp aroma zone, 21490107 le petit grassois, 25cons007-4-01485 aroma zone"
+    },
+    {
+      "batch_number": "LOT-N°43",
+      "product_name": "Savon tendresse mielleuse au lait de chèvre sans parfum",
+      "production_date": "2026-05-11",
+      "curing_end_date": "2026-07-11",
+      "quantity_produced": 28,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Huile d'olive, Huile d'avocat, Beurre de karité, Huile de jojoba, Huile de coco, Argile jaune, Lait de chévre, Miel. Réf Fournisseurs: 6203lvd80j210 rameau d'argent, 17/12 dom 33619 carrefour, 1152521025 naissance, avjb046 royal bio, bc111j504 sevenhills bio, mc ganna x0023lewab amazon, 03/05/25 (marsotte), 050226 (salomiel)"
+    },
+    {
+      "batch_number": "LOT-N°44",
+      "product_name": "shampoing douce crinière au lait d'anesse",
+      "production_date": "2026-05-17",
+      "curing_end_date": "2026-06-14",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum fleurs de cerisier, Lait d'anesse, Beurre de karité, Beurre de cacao, Glycerine végétale, Poudre de guimauve, Huile d'amande douce, Acide stearique, Parfum. Réf Fournisseurs: 14, T6 1516 les anes de monedies, 1156950326 naissance, 626/251/0081 cacao venezuela, GV014 ROYAL BIO, 24 EXT SEC 0269QF AROMA ZONE, avab057 royal bio, 23DIV009CP14 AROMA ZONE, 21480513 LE PETIT GRASSOIS"
+    },
+    {
+      "batch_number": "LOT-N°45",
+      "product_name": "Test masque visage",
+      "production_date": "2026-05-30",
+      "curing_end_date": "2026-06-27",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Lait d'anesse, Huile de courge, Beurre de cupucao, Huile de son de riz, Argile rose, Miel, Vitamine e, Cosgard. Réf Fournisseurs: au lait d'anesse sans parfum, 500 gr, T6 23 10 les anes de monedies, deluxe lidl 25005044, mcoprb006 royal bio, AVARRSB009 ROYAL BIO, MY COSMETIK 22-22-S28, 05/02/26 salomiel, 0085301 aroma zone, 25cons007/401485 aroma zone"
+    },
+    {
+      "batch_number": "LOT-N°46",
+      "product_name": "Test creme corps solide",
+      "production_date": "2026-05-31",
+      "curing_end_date": "2026-06-28",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum pomme d'amour, Lait d'anesse, Beurre de cacao, Beurre de karité, Huile de jojoba, Huile de rose musque, Parfum, Cosgard. Réf Fournisseurs: 18, acide stearique, vitamine e, alcool cetylique, T6 15 16 les anes de monedies, 611/251217 cacao venezuela, 1152521025 naissance, aujb046 royal bio, avrmb028 royal bio, 23div0009lp/4 aroma zone, 0085301-1v aroma zone, 24emu0070lp aroma zone, 21490107 le petit grassois, 25cons007-4-01485 aroma zone"
+    },
+    {
+      "batch_number": "LOT-N°47",
+      "product_name": "Test savon douce",
+      "production_date": "2026-06-01",
+      "curing_end_date": "2026-08-01",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: anesse parfum monoi peche, 20, 1152521025 naissance, naissance 1149320825, 25hv022512, t6226 les anes de monedieS, 5032954, lidl bio, le petit grassois"
+    },
+    {
+      "batch_number": "LOT-N°48",
+      "product_name": "Savon tendresse mielleuse au lait de chèvre sans parfum",
+      "production_date": "2026-06-05",
+      "curing_end_date": "2026-08-05",
+      "quantity_produced": 28,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Huile d'olive, Huile d'avocat, Beurre de karité, Huile de jojoba, Huile de coco, Argile jaune, Lait de chévre, Miel. Réf Fournisseurs: 6203lvd80j210 rameau d'argent, 17/12 dom 33619 carrefour, 1152521025 naissance, avjb046 royal bio, naissance 1149320825, mc ganna x0023lewab amazon, 03/05/25 (marsotte), 050226 (salomiel)"
+    },
+    {
+      "batch_number": "LOT-N°49",
+      "product_name": "Test masque 2 en 1 enfants au lait de chevre",
+      "production_date": "2026-06-08",
+      "curing_end_date": "2026-07-06",
+      "quantity_produced": 200,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Lait de chèvre, Argile blanche, Poudre d'avoine colloide, Beurre cupucao, Huile d'amande douce, Glycerine végétale, Vitamine e, Cosgard. Réf Fournisseurs: 03/05/25 (marsotte), aroma zone 301926, aroma zone 25extsec0467qf, mcoprb006 royal bio, avab057 royal bio, GV014 ROYAL BIO, aroma zone 25cons0086/1, aroma zone 25cons0077/4-01485"
+    },
+    {
+      "batch_number": "LOT-N°50",
+      "product_name": "Savon test douce chèvre",
+      "production_date": "2026-06-08",
+      "curing_end_date": "2026-08-08",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Parfum agrumes, Beurre de karité, Huile de coco, Huile de jojoba, Huile de lin, Huile d'olive, Lait de chèvre, Parfum. Réf Fournisseurs: 30, 1152521025 naissance, naissance 1149320825, avjb046 royal bio, lidl bio, lidl bio, 04/05/25 marsotte, 21470527"
+    },
+    {
+      "batch_number": "LOT-N°50",
+      "product_name": "Test démaquillant au lait de chèvre parfum magniola/fdc",
+      "production_date": "2026-06-09",
+      "curing_end_date": "2026-07-07",
+      "quantity_produced": 500,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Lait de chèvre, Beurre cupucao, Beurre de karité, Olivem, Alcool cétylique, Vitamine e, Cosgard, Parfum, Aroma zone 25emuu007lp/2, Aroma zone 24emu0070lp. Réf Fournisseurs: 04/05/25 marsotte, mcoprb006 royal bio, 1152521025 naissance, aroma zone 25cons0086/1, aroma zone 25cons0077/4-01485, 758a-k007-h6yc magnolia/fdc 21490320"
+    },
+    {
+      "batch_number": "LOT-N°51",
+      "product_name": "Test",
+      "production_date": "2026-06-10",
+      "curing_end_date": "2026-07-08",
+      "quantity_produced": 10,
+      "status": "ready",
+      "notes": "Traçabilité: Ingrédients: Lait d'anesse, Miel, Huile de tournesol, Huile de jojoba, Eau demineralise, Beurre de mangue, Btms, Alcool cetylique, Poudre de noyau, Vitamine e, Cosgard, Les anes de monedies. Réf Fournisseurs: visage gommage lait d’ânesse, 300 gr, d'olive, 050226 (salomiel), ba10142021(au moulin de francois), avjb046 royal bio, carrefour, mmrb016 royal bio, 331225 aroma zone, 24emv00707qf/1 aroma zone, 25exf0007qf/1 aroma zone, 0085301-1v aroma zone, 25cons007-4-01485 aroma zone"
+    },
+    {
+      "batch_number": "LOT-N°52",
+      "product_name": "SAVONS",
+      "production_date": "2026-07-14",
+      "curing_end_date": "2026-09-14",
+      "quantity_produced": 10,
+      "status": "curing",
+      "notes": "Traçabilité: Ingrédients: Beurre de cacao, Huile de coco, Huile d'olive, Huile de laurier, Parfum. Réf Fournisseurs: DOUCE ALEP parfum menthe basilic sauge, 18, 626/251008-1 cacao venezuela, 1149320825 naissance, obr 60524 greenweez, avblaub010 royal bio, le petit grassois 21490220"
+    },
+    {
+      "batch_number": "LOT-N°53",
+      "product_name": "SAVON DOUCE ANESSE PARFUM FLEURS DE COTON",
+      "production_date": "2026-07-18",
+      "curing_end_date": "2026-09-18",
+      "quantity_produced": 40,
+      "status": "curing",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: Naissance 1155280326, naissance 1149320825, 25hv0225/2 aroma zone, t62013/t6202/t6so8, obr 60524 greenweez, le petit grassois 21481030"
+    },
+    {
+      "batch_number": "LOT-N°54",
+      "product_name": "shampoing douce crinière au lait d'anesse",
+      "production_date": "2026-07-30",
+      "curing_end_date": "2026-08-27",
+      "quantity_produced": 10,
+      "status": "curing",
+      "notes": "Traçabilité: Ingrédients: Parfum fleurs de cerisier, Lait d'anesse, Beurre de karité, Beurre de cacao, Glycerine végétale, Poudre de guimauve, Huile d'amande douce, Acide stearique, Parfum. Réf Fournisseurs: 14, T6 1516 les anes de monedies/t6 42, 1156950326 naissance, 626/251/0081 cacao venezuela, GV014 ROYAL BIO, 24 EXT SEC 0269QF AROMA ZONE, avab057 royal bio, 23DIV009CP14 AROMA ZONE, 21480513 LE PETIT GRASSOIS"
+    },
+    {
+      "batch_number": "LOT-N°53",
+      "product_name": "SAVON DOUCE ANESSE PARFUM FLEURS DE COTON",
+      "production_date": "2026-08-03",
+      "curing_end_date": "2026-10-03",
+      "quantity_produced": 45,
+      "status": "curing",
+      "notes": "Traçabilité: Ingrédients: Beurre de karité, Huile de coco, Huile d'avoine, Lait d’ânesse, Huile d'olive, Parfum. Réf Fournisseurs: Naissance 1155280326, naissance 11493220825/, 25hv0259/2 aroma zone, t6,50,17 /t6,42,1/, obr 60524 greenweez, le petit grassois 21481030"
+    }
+  ]
+}

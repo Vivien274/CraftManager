@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS public.organisations (
     name TEXT NOT NULL,
     craft_type TEXT NOT NULL DEFAULT 'savonnerie', -- savonnerie, bougies, ceramique, couture, bijouterie, autre
     currency TEXT NOT NULL DEFAULT 'EUR', -- EUR, USD, CHF, GBP, CAD
+    plan_tier TEXT NOT NULL DEFAULT 'expert', -- starter, pro, expert
+    subscription_status TEXT DEFAULT 'active', -- active, trialing, canceled
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 

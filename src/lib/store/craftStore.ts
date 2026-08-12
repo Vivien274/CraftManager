@@ -26,6 +26,7 @@ const DEFAULT_ORG: Organisation = {
   name: "L'Atelier des Restanques",
   craft_type: 'savonnerie',
   currency: 'EUR',
+  plan_tier: 'expert',
   created_at: new Date().toISOString(),
 };
 
@@ -211,6 +212,7 @@ export function useCraftStore() {
             name: updated.name,
             craft_type: updated.craft_type,
             currency: updated.currency,
+            plan_tier: updated.plan_tier,
           })
           .eq('id', updated.id);
       }
@@ -797,28 +799,24 @@ export function useCraftStore() {
         data: { user },
       } = await supabase.auth.getUser();
 
-      // 1. Add Suppliers
-      const newSuppliers: Supplier[] = [];
-      for (const sName of data.suppliers) {
-        const sup: Supplier = {
-          id: `sup-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
-          organisation_id: organisation.id,
+      if (user && organisation.id) {
+        // 1. Insert Suppliers into Supabase
+        const supPayloads = data.suppliers.map((sName: string) => ({
           name: sName,
-          created_at: new Date().toISOString(),
-        };
-        newSuppliers.push(sup);
-      }
-      setSuppliers((prev) => [...newSuppliers, ...prev]);
-
-      // 2. Add Raw Materials
-      const rmMap: Record<string, string> = {};
-      const newRM: RawMaterial[] = [];
-      for (const rmName of data.raw_materials) {
-        const rmId = `rm-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
-        rmMap[rmName.toLowerCase()] = rmId;
-        newRM.push({
-          id: rmId,
           organisation_id: organisation.id,
+        }));
+        const { data: dbSuppliers, error: supErr } = await supabase
+          .from('suppliers')
+          .insert(supPayloads)
+          .select();
+
+        if (supErr) console.error('Error inserting suppliers:', supErr);
+        if (dbSuppliers && dbSuppliers.length > 0) {
+          setSuppliers((prev) => [...(dbSuppliers as Supplier[]), ...prev]);
+        }
+
+        // 2. Insert Raw Materials into Supabase
+        const rmPayloads = data.raw_materials.map((rmName: string) => ({
           name: rmName,
           category: rmName.toLowerCase().includes('huile')
             ? 'Huiles Végétales'
@@ -826,27 +824,26 @@ export function useCraftStore() {
             ? 'Beurres'
             : rmName.toLowerCase().includes('lait')
             ? 'Additifs'
-            : 'Matière Première',
+            : 'Général',
           unit: 'g',
           purchase_price: 15.0,
           purchase_quantity: 1000,
-          cost_per_unit: 0.015,
           stock_quantity: 5000,
           min_stock_alert: 500,
-          created_at: new Date().toISOString(),
-        });
-      }
-      setRawMaterials((prev) => [...newRM, ...prev]);
-
-      // 3. Add Products
-      const prodMap: Record<string, string> = {};
-      const newProducts: Product[] = [];
-      for (const p of data.products) {
-        const prodId = `prod-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
-        prodMap[p.name] = prodId;
-        newProducts.push({
-          id: prodId,
           organisation_id: organisation.id,
+        }));
+        const { data: dbRM, error: rmErr } = await supabase
+          .from('raw_materials')
+          .insert(rmPayloads)
+          .select();
+
+        if (rmErr) console.error('Error inserting raw_materials:', rmErr);
+        if (dbRM && dbRM.length > 0) {
+          setRawMaterials((prev) => [...(dbRM as RawMaterial[]), ...prev]);
+        }
+
+        // 3. Insert Products into Supabase
+        const prodPayloads = data.products.map((p: any) => ({
           name: p.name,
           category: p.category,
           sku: `SKU-${Math.floor(100 + Math.random() * 900)}`,
@@ -855,59 +852,28 @@ export function useCraftStore() {
           extra_costs: 0.3,
           curing_days: p.curing_days,
           stock_quantity: 25,
-          created_at: new Date().toISOString(),
-        });
-      }
-      setProducts((prev) => [...newProducts, ...prev]);
-
-      // 4. Add Batches
-      const newBatches: ProductionBatch[] = [];
-      for (const b of data.batches) {
-        const pId = prodMap[b.product_name] || newProducts[0]?.id || 'prod-1';
-        newBatches.push({
-          id: `batch-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
           organisation_id: organisation.id,
-          product_id: pId,
-          batch_number: b.batch_number,
-          quantity_produced: b.quantity_produced,
-          production_date: b.production_date,
-          curing_end_date: b.curing_end_date,
-          status: b.status,
-          notes: b.notes,
-          created_at: new Date().toISOString(),
-        });
-      }
-      setBatches((prev) => [...newBatches, ...prev]);
+        }));
+        const { data: dbProducts, error: prodErr } = await supabase
+          .from('products')
+          .insert(prodPayloads)
+          .select();
 
-      // Sync to Supabase if authenticated
-      if (user && organisation.id) {
-        for (const s of newSuppliers) {
-          await supabase.from('suppliers').insert({ name: s.name, organisation_id: organisation.id });
+        if (prodErr) console.error('Error inserting products:', prodErr);
+
+        const realProdMap: Record<string, string> = {};
+        if (dbProducts && dbProducts.length > 0) {
+          setProducts((prev) => [...(dbProducts as Product[]), ...prev]);
+          for (const dp of dbProducts) {
+            realProdMap[dp.name] = dp.id;
+          }
         }
-        for (const rm of newRM) {
-          await supabase.from('raw_materials').insert({
-            name: rm.name,
-            category: rm.category,
-            unit: rm.unit,
-            purchase_price: rm.purchase_price,
-            purchase_quantity: rm.purchase_quantity,
-            stock_quantity: rm.stock_quantity,
-            organisation_id: organisation.id,
-          });
-        }
-        for (const p of newProducts) {
-          await supabase.from('products').insert({
-            name: p.name,
-            category: p.category,
-            selling_price: p.selling_price,
-            curing_days: p.curing_days,
-            stock_quantity: p.stock_quantity,
-            organisation_id: organisation.id,
-          });
-        }
-        for (const b of newBatches) {
-          await supabase.from('production_batches').insert({
-            product_id: b.product_id,
+
+        // 4. Insert Production Batches with REAL product UUIDs
+        const fallbackProdId = dbProducts && dbProducts[0] ? dbProducts[0].id : null;
+        if (fallbackProdId) {
+          const batchPayloads = data.batches.map((b: any) => ({
+            product_id: realProdMap[b.product_name] || fallbackProdId,
             batch_number: b.batch_number,
             quantity_produced: b.quantity_produced,
             production_date: b.production_date,
@@ -915,8 +881,73 @@ export function useCraftStore() {
             status: b.status,
             notes: b.notes,
             organisation_id: organisation.id,
-          });
+          }));
+
+          const { data: dbBatches, error: batchErr } = await supabase
+            .from('production_batches')
+            .insert(batchPayloads)
+            .select();
+
+          if (batchErr) console.error('Error inserting batches:', batchErr);
+          if (dbBatches && dbBatches.length > 0) {
+            setBatches((prev) => [...(dbBatches as ProductionBatch[]), ...prev]);
+          }
         }
+      } else {
+        // Fallback for local offline state
+        const newSuppliers: Supplier[] = data.suppliers.map((sName: string) => ({
+          id: `sup-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+          organisation_id: organisation.id,
+          name: sName,
+          created_at: new Date().toISOString(),
+        }));
+        setSuppliers((prev) => [...newSuppliers, ...prev]);
+
+        const newRM: RawMaterial[] = data.raw_materials.map((rmName: string) => ({
+          id: `rm-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+          organisation_id: organisation.id,
+          name: rmName,
+          category: 'Général',
+          unit: 'g',
+          purchase_price: 15.0,
+          purchase_quantity: 1000,
+          cost_per_unit: 0.015,
+          stock_quantity: 5000,
+          min_stock_alert: 500,
+          created_at: new Date().toISOString(),
+        }));
+        setRawMaterials((prev) => [...newRM, ...prev]);
+
+        const prodMap: Record<string, string> = {};
+        const newProducts: Product[] = data.products.map((p: any) => {
+          const pid = `prod-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+          prodMap[p.name] = pid;
+          return {
+            id: pid,
+            organisation_id: organisation.id,
+            name: p.name,
+            category: p.category,
+            selling_price: 7.5,
+            curing_days: p.curing_days,
+            stock_quantity: 25,
+            created_at: new Date().toISOString(),
+          };
+        });
+        setProducts((prev) => [...newProducts, ...prev]);
+
+        const newBatches: ProductionBatch[] = data.batches.map((b: any) => ({
+          id: `batch-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+          organisation_id: organisation.id,
+          product_id: prodMap[b.product_name] || newProducts[0]?.id || 'prod-1',
+          batch_number: b.batch_number,
+          quantity_produced: b.quantity_produced,
+          production_date: b.production_date,
+          curing_end_date: b.curing_end_date,
+          status: b.status,
+          notes: b.notes,
+          created_at: new Date().toISOString(),
+        }));
+        setBatches((prev) => [...newBatches, ...prev]);
       }
       return true;
     } catch (e) {

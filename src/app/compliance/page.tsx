@@ -20,8 +20,22 @@ import {
   calculateProductAllergens,
   generateCLPDetails,
 } from '@/lib/utils/compliance';
+import FeatureGate from '@/components/common/FeatureGate';
 
 export default function CompliancePage() {
+  return (
+    <FeatureGate
+      feature="compliance"
+      title="Conformité Réglementaire Cosmétique (DIP / CLP / INCI)"
+      description="Générez la liste INCI légale, calculez les 26 allergènes et éditez vos fiches laboratoire avec la Formule Expert."
+      requiredTier="expert"
+    >
+      <ComplianceContent />
+    </FeatureGate>
+  );
+}
+
+function ComplianceContent() {
   const { isLoaded, products, rawMaterials, batches } = useCraftStore();
 
   const [selectedProductId, setSelectedProductId] = useState<string>(products[0]?.id || '');

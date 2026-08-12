@@ -21,11 +21,14 @@ import {
   GraduationCap,
   ClipboardList,
   Settings,
+  Crown,
 } from 'lucide-react';
 import { useCraftStore } from '@/lib/store/craftStore';
 import { createClient } from '@/lib/supabase/client';
 import SettingsModal from '../settings/SettingsModal';
 import OnboardingModal from '../onboarding/OnboardingModal';
+import PricingModal from '../pricing/PricingModal';
+import { PLAN_CONFIGS } from '@/lib/utils/permissions';
 
 const NAV_ITEMS = [
   { name: 'Tableau de bord', href: '/', icon: LayoutDashboard },
@@ -47,7 +50,11 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isPricingOpen, setIsPricingOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
+
+  const currentTier = organisation.plan_tier || 'expert';
+  const planConfig = PLAN_CONFIGS[currentTier];
 
   useEffect(() => {
     const supabase = createClient();
@@ -115,8 +122,18 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Right Actions: Didacticiel, Settings, Auth Profile & POS Button */}
+          {/* Right Actions: Pricing Badge, Didacticiel, Settings, Auth Profile & POS Button */}
           <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* Plan Tier Badge Button */}
+            <button
+              onClick={() => setIsPricingOpen(true)}
+              className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition border shadow-2xs cursor-pointer ${planConfig.bgColor} ${planConfig.color} ${planConfig.borderColor} hover:opacity-90`}
+              title="Gérer mon abonnement"
+            >
+              <Crown className="w-3.5 h-3.5" />
+              <span>{planConfig.badge}</span>
+            </button>
+
             <button
               onClick={() => setIsOnboardingOpen(true)}
               className="flex items-center gap-1.5 px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-950 rounded-xl text-xs font-extrabold transition border border-amber-300 shadow-2xs"
@@ -235,6 +252,11 @@ export default function Navbar() {
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
+      />
+
+      <PricingModal
+        isOpen={isPricingOpen}
+        onClose={() => setIsPricingOpen(false)}
       />
     </>
   );

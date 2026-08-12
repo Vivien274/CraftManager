@@ -1,6 +1,8 @@
 export type CraftType = 'savonnerie' | 'bijouterie' | 'apiculture' | 'bougies' | 'ceramique' | 'couture' | 'autre';
 export type UnitType = 'g' | 'kg' | 'ml' | 'l' | 'unité' | 'cm';
 
+export type PlanTier = 'starter' | 'pro' | 'expert';
+
 export type BatchStatus = 'curing' | 'ready' | 'archived';
 
 export type SaleChannel = 'market' | 'direct' | 'web';
@@ -12,6 +14,7 @@ export interface Organisation {
   name: string;
   craft_type: CraftType;
   currency: string; // 'EUR' | 'USD' | 'CHF'
+  plan_tier?: PlanTier;
   created_at: string;
 }
 

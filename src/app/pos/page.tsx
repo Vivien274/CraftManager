@@ -22,8 +22,22 @@ import {
 import { useCraftStore } from '@/lib/store/craftStore';
 import { formatCurrency } from '@/lib/utils/calculator';
 import { SaleChannel, PaymentMethod } from '@/lib/types/craft';
+import FeatureGate from '@/components/common/FeatureGate';
 
 export default function POSPage() {
+  return (
+    <FeatureGate
+      feature="pos"
+      title="Caisse Tactile Stand & Marché"
+      description="Encaissez vos ventes en 2 clics sur les marchés et déstockez vos savons en temps réel avec la Formule Expert."
+      requiredTier="expert"
+    >
+      <POSContent />
+    </FeatureGate>
+  );
+}
+
+function POSContent() {
   const {
     isLoaded,
     products,

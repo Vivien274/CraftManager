@@ -146,45 +146,39 @@ export function useCraftStore() {
 
           // Fetch Raw Materials
           const { data: rmData } = await supabase.from('raw_materials').select('*').order('created_at', { ascending: false });
-          if (rmData && rmData.length > 0) {
-            setRawMaterials(rmData as RawMaterial[]);
-            localStorage.setItem('craft_raw_materials', JSON.stringify(rmData));
-          }
+          const fetchedRM = (rmData as RawMaterial[]) || [];
+          setRawMaterials(fetchedRM);
+          localStorage.setItem('craft_raw_materials', JSON.stringify(fetchedRM));
 
           // Fetch Products
           const { data: prodData } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-          if (prodData && prodData.length > 0) {
-            setProducts(prodData as Product[]);
-            localStorage.setItem('craft_products', JSON.stringify(prodData));
-          }
+          const fetchedProd = (prodData as Product[]) || [];
+          setProducts(fetchedProd);
+          localStorage.setItem('craft_products', JSON.stringify(fetchedProd));
 
           // Fetch Production Batches
           const { data: batchData } = await supabase.from('production_batches').select('*').order('created_at', { ascending: false });
-          if (batchData && batchData.length > 0) {
-            setBatches(batchData as ProductionBatch[]);
-            localStorage.setItem('craft_batches', JSON.stringify(batchData));
-          }
+          const fetchedBatches = (batchData as ProductionBatch[]) || [];
+          setBatches(fetchedBatches);
+          localStorage.setItem('craft_batches', JSON.stringify(fetchedBatches));
 
           // Fetch Sales
           const { data: saleData } = await supabase.from('sales').select('*, items:sale_items(*)').order('created_at', { ascending: false });
-          if (saleData && saleData.length > 0) {
-            setSales(saleData as Sale[]);
-            localStorage.setItem('craft_sales', JSON.stringify(saleData));
-          }
+          const fetchedSales = (saleData as Sale[]) || [];
+          setSales(fetchedSales);
+          localStorage.setItem('craft_sales', JSON.stringify(fetchedSales));
 
           // Fetch Expenses
           const { data: expData } = await supabase.from('expenses').select('*').order('created_at', { ascending: false });
-          if (expData && expData.length > 0) {
-            setExpenses(expData as Expense[]);
-            localStorage.setItem('craft_expenses', JSON.stringify(expData));
-          }
+          const fetchedExpenses = (expData as Expense[]) || [];
+          setExpenses(fetchedExpenses);
+          localStorage.setItem('craft_expenses', JSON.stringify(fetchedExpenses));
 
           // Fetch Suppliers
           const { data: supData } = await supabase.from('suppliers').select('*').order('created_at', { ascending: false });
-          if (supData && supData.length > 0) {
-            setSuppliers(supData as Supplier[]);
-            localStorage.setItem('craft_suppliers', JSON.stringify(supData));
-          }
+          const fetchedSuppliers = (supData as Supplier[]) || [];
+          setSuppliers(fetchedSuppliers);
+          localStorage.setItem('craft_suppliers', JSON.stringify(fetchedSuppliers));
         }
       } catch (e) {
         console.error('Error loading data from Supabase/storage:', e);

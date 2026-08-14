@@ -1,7 +1,5 @@
-'use client';
-
-import { useState } from 'react';
-import { X, Mail, Printer, CheckCircle2, AlertCircle, Loader2, FileText, Send } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, Mail, Printer, CheckCircle2, AlertCircle, Loader2, FileText, Send, ExternalLink } from 'lucide-react';
 import { Order, Client, Organisation } from '@/lib/types/craft';
 import { formatCurrency } from '@/lib/utils/calculator';
 
@@ -12,6 +10,8 @@ interface InvoiceModalProps {
   isOpen: boolean;
   onClose: () => void;
   onEmailUpdated?: (newEmail: string) => void;
+  autoSend?: boolean;
+  initialEmail?: string;
 }
 
 export function InvoiceModal({
@@ -21,27 +21,28 @@ export function InvoiceModal({
   isOpen,
   onClose,
   onEmailUpdated,
+  autoSend = false,
+  initialEmail,
 }: InvoiceModalProps) {
-  const [email, setEmail] = useState(client?.email || '');
+  const [email, setEmail] = useState(initialEmail || client?.email || '');
   const [sending, setSending] = useState(false);
   const [sendSuccess, setSendSuccess] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
+  const [hasAutoSent, setHasAutoSent] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    const targetEmail = initialEmail || client?.email || '';
+    if (targetEmail) {
+      setEmail(targetEmail);
+    }
+  }, [initialEmail, client]);
 
-  const invoiceDate = new Date(order.created_at || Date.now()).toLocaleDateString('fr-FR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-
-  const handleSendEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const performSendEmail = async (targetEmail: string) => {
     setSendError(null);
     setSendSuccess(null);
 
-    if (!email.trim() || !email.includes('@')) {
-      setSendError('Veuillez saisir une adresse email valide.');
+    if (!targetEmail.trim() || !targetEmail.includes('@')) {
+      setSendError("Veuillez saisir une adresse email valide pour le client.");
       return;
     }
 
@@ -52,7 +53,7 @@ export function InvoiceModal({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          clientEmail: email,
+          clientEmail: targetEmail,
           clientName: client?.name || 'Client',
           orderNumber: order.order_number,
           totalAmount: order.total_amount,
@@ -67,9 +68,9 @@ export function InvoiceModal({
         throw new Error(data.error || "Erreur lors de l'envoi de la facture");
       }
 
-      setSendSuccess(data.message || `Facture envoyée avec succès à ${email} !`);
-      if (onEmailUpdated && email !== client?.email) {
-        onEmailUpdated(email);
+      setSendSuccess(data.message || `Facture ${order.order_number} envoyée avec succès à ${targetEmail} !`);
+      if (onEmailUpdated && targetEmail !== client?.email) {
+        onEmailUpdated(targetEmail);
       }
     } catch (err: any) {
       setSendError(err.message || 'Impossible d’envoyer la facture par email.');
@@ -78,9 +79,42 @@ export function InvoiceModal({
     }
   };
 
+  useEffect(() => {
+    if (isOpen && autoSend && !hasAutoSent) {
+      const targetEmail = email || initialEmail || client?.email || '';
+      setHasAutoSent(true);
+      if (targetEmail) {
+        performSendEmail(targetEmail);
+      } else {
+        setSendError("Aucune adresse email renseignée pour ce client. Saisissez l'email ci-dessous et cliquez sur Envoyer.");
+      }
+    }
+  }, [isOpen, autoSend, hasAutoSent, email, initialEmail, client]);
+
+  if (!isOpen) return null;
+
+  const invoiceDate = new Date(order.created_at || Date.now()).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+  const handleSendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    performSendEmail(email);
+  };
+
   const handlePrint = () => {
     window.print();
   };
+
+  const mailtoSubject = encodeURIComponent(`Facture N° ${order.order_number} - ${organisation.name}`);
+  const mailtoBody = encodeURIComponent(
+    `Bonjour ${client?.name || ''},\n\nVeuillez trouver ci-joint les détails de votre facture n° ${order.order_number} d'un montant de ${formatCurrency(order.total_amount)}.\n\nDétails de la commande :\n` +
+      order.items.map((i) => `- ${i.product?.name || 'Produit'} x ${i.quantity} : ${formatCurrency(i.quantity * i.unit_price)}`).join('\n') +
+      `\n\nTotal Net à payer TTC : ${formatCurrency(order.total_amount)}\n\nCordialement,\n${organisation.name}`
+  );
+  const mailtoUrl = `mailto:${email}?subject=${mailtoSubject}&body=${mailtoBody}`;
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
@@ -122,21 +156,33 @@ export function InvoiceModal({
                 required
               />
             </div>
-            <button
-              type="submit"
-              disabled={sending}
-              className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shrink-0 shadow-sm transition"
-            >
-              {sending ? (
-                <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" /> Envoi en cours...
-                </>
-              ) : (
-                <>
-                  <Send className="w-3.5 h-3.5" /> Envoyer la Facture par Email
-                </>
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                disabled={sending}
+                className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shrink-0 shadow-sm transition"
+              >
+                {sending ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" /> Envoi en cours...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-3.5 h-3.5" /> Envoyer par Email
+                  </>
+                )}
+              </button>
+
+              {email && (
+                <a
+                  href={mailtoUrl}
+                  title="Ouvrir directement dans votre logiciel de messagerie (Apple Mail, Outlook, etc.)"
+                  className="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 px-3 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shrink-0 transition"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-indigo-600" /> Ouvrir App Mail
+                </a>
               )}
-            </button>
+            </div>
           </form>
 
           {sendSuccess && (

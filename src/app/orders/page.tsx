@@ -294,26 +294,8 @@ export default function OrdersPage() {
 
     setIsOrderModalOpen(false);
 
-    // Auto-send invoice if checked
-    if (autoSendInvoice && orderClientEmail) {
-      try {
-        await fetch('/api/send-invoice', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            clientEmail: orderClientEmail,
-            clientName: clients.find((c) => c.id === selectedClientId)?.name || 'Client',
-            orderNumber,
-            totalAmount,
-            items: formattedItems,
-            organisationName: organisation.name,
-          }),
-        });
-      } catch (err) {
-        console.error('Error auto-sending invoice:', err);
-      }
-
-      // Open invoice modal for confirmation/printing
+    // Auto-open invoice modal with autoSend if checked
+    if (autoSendInvoice) {
       setSelectedInvoiceOrder(fullCreatedOrder);
       setIsInvoiceModalOpen(true);
     }
@@ -1205,6 +1187,8 @@ export default function OrdersPage() {
           client={clients.find((c) => c.id === selectedInvoiceOrder.client_id)}
           organisation={organisation}
           isOpen={isInvoiceModalOpen}
+          autoSend={autoSendInvoice}
+          initialEmail={clients.find((c) => c.id === selectedInvoiceOrder.client_id)?.email}
           onClose={() => {
             setIsInvoiceModalOpen(false);
             setSelectedInvoiceOrder(null);

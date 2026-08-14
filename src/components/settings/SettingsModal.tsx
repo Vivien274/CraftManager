@@ -330,49 +330,6 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 </div>
               )}
             </div>
-
-            {/* Resend Direct Email Configuration */}
-            <div className="p-3.5 bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl space-y-2.5 shadow-md">
-              <div className="flex items-center justify-between">
-                <span className="font-extrabold text-xs flex items-center gap-1.5 text-indigo-200">
-                  <Mail className="w-4 h-4 text-indigo-400" />
-                  Service d'Envoi Direct d'Emails (Resend.com)
-                </span>
-                <a
-                  href="https://resend.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-[10px] font-bold text-indigo-300 hover:text-white underline"
-                >
-                  Gratuit (300/mois) ↗
-                </a>
-              </div>
-              <p className="text-[11px] text-slate-300 leading-snug">
-                Renseignez votre clé API Resend pour que l'outil envoie directement les factures par email à vos clients en 1 clic.
-              </p>
-
-              <div>
-                <label className="block text-[10px] font-bold text-slate-300 mb-1">Clé API Resend (ex: re_12345...)</label>
-                <input
-                  type="password"
-                  value={resendApiKey}
-                  onChange={(e) => setResendApiKey(e.target.value)}
-                  placeholder="re_..."
-                  className="w-full px-3 py-1.5 bg-slate-800/90 border border-slate-700 rounded-xl text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold text-slate-300 mb-1">Adresse Email Expéditeur</label>
-                <input
-                  type="text"
-                  value={resendFromEmail}
-                  onChange={(e) => setResendFromEmail(e.target.value)}
-                  placeholder="ex: L'Atelier <onboarding@resend.dev> ou contact@votredomaine.fr"
-                  className="w-full px-3 py-1.5 bg-slate-800/90 border border-slate-700 rounded-xl text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-400"
-                />
-              </div>
-            </div>
           </div>
 
           {/* Import Traceability Document Section (Strictly restricted to savonneriecyaness@gmail.com) */}

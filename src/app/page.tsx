@@ -76,87 +76,97 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* 🌤️ Cockpit Météo Atelier — Banner */}
-      <div className="glass-panel p-6 rounded-3xl bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-900 text-white shadow-xl border border-indigo-800/40 relative overflow-hidden">
-        {/* Ambient Glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
-
-        <div className="relative z-10 space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-            <div>
-              <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-400 text-slate-950 shadow-xs inline-block mb-2">
-                Cockpit Atelier • {organisation.name}
-              </span>
-              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                Météo de l'Atelier 🌿
-              </h1>
-            </div>
-
-            <div className="text-left sm:text-right bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10">
-              <span className="text-[11px] text-slate-300 font-semibold block">Chiffre d'Affaires Réalisé</span>
-              <span className="text-xl font-black text-amber-400">{formatCurrency(totalRevenue)}</span>
-            </div>
+      {/* 🌤️ Cockpit Météo Atelier — High Contrast Clean Banner */}
+      <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div>
+            <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-950 border border-amber-300 inline-block mb-1.5">
+              Cockpit Atelier • {organisation.name}
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+              Météo de l'Atelier 🌿
+            </h1>
+            <p className="text-xs text-slate-500 font-semibold mt-0.5">
+              Vue synthétique de votre production en cours, des commandes et de l'état des stocks.
+            </p>
           </div>
 
-          {/* Activity Pills */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-            <Link
-              href="/production"
-              className="bg-white/10 hover:bg-white/15 backdrop-blur-md p-3 rounded-2xl border border-white/10 transition flex items-center justify-between group"
-            >
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center font-bold">
-                  <Hourglass className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-slate-300 uppercase">Cure & Maturation</p>
-                  <p className="text-xs font-black text-white">
-                    {curingBatchesCount} lot(s) en cours ({batchesEndingCure.length} bientôt prêts)
-                  </p>
-                </div>
-              </div>
-              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-amber-300 group-hover:translate-x-1 transition" />
-            </Link>
-
-            <Link
-              href="/orders"
-              className="bg-white/10 hover:bg-white/15 backdrop-blur-md p-3 rounded-2xl border border-white/10 transition flex items-center justify-between group"
-            >
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-indigo-400/20 text-indigo-300 flex items-center justify-center font-bold">
-                  <ClipboardList className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-slate-300 uppercase">Commandes</p>
-                  <p className="text-xs font-black text-white">
-                    {pendingOrders.length} commande(s) à traiter
-                  </p>
-                </div>
-              </div>
-              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-300 group-hover:translate-x-1 transition" />
-            </Link>
-
-            <Link
-              href="/raw-materials"
-              className="bg-white/10 hover:bg-white/15 backdrop-blur-md p-3 rounded-2xl border border-white/10 transition flex items-center justify-between group"
-            >
-              <div className="flex items-center gap-2.5">
-                <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold ${
-                  lowStockRMCount > 0 ? 'bg-rose-500/30 text-rose-300' : 'bg-emerald-500/20 text-emerald-300'
-                }`}>
-                  <Boxes className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-slate-300 uppercase">Santé des Stocks</p>
-                  <p className="text-xs font-black text-white">
-                    {lowStockRMCount > 0 ? `${lowStockRMCount} ingrédient(s) en alerte` : '100% des stocks optimaux'}
-                  </p>
-                </div>
-              </div>
-              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-white group-hover:translate-x-1 transition" />
-            </Link>
+          <div className="text-left sm:text-right bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-2xl">
+            <span className="text-[11px] text-slate-500 font-bold block">Chiffre d'Affaires Réalisé</span>
+            <span className="text-xl font-black text-emerald-700">{formatCurrency(totalRevenue)}</span>
           </div>
+        </div>
+
+        {/* Activity Cards with Clear High-Contrast Styling */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+          <Link
+            href="/production"
+            className="bg-slate-50 hover:bg-slate-100/90 p-4 rounded-2xl border border-slate-200 transition flex items-center justify-between group cursor-pointer"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 border border-amber-200 flex items-center justify-center font-bold shrink-0">
+                <Hourglass className="w-5 h-5 text-amber-700" />
+              </div>
+              <div>
+                <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Cure & Maturation</p>
+                <p className="text-xs font-black text-slate-900">
+                  {curingBatchesCount} lot(s) en cours
+                </p>
+                <span className="text-[11px] text-amber-800 font-semibold block">
+                  {batchesEndingCure.length} bientôt prêts
+                </span>
+              </div>
+            </div>
+            <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-amber-600 group-hover:translate-x-1 transition" />
+          </Link>
+
+          <Link
+            href="/orders"
+            className="bg-slate-50 hover:bg-slate-100/90 p-4 rounded-2xl border border-slate-200 transition flex items-center justify-between group cursor-pointer"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-800 border border-indigo-200 flex items-center justify-center font-bold shrink-0">
+                <ClipboardList className="w-5 h-5 text-indigo-700" />
+              </div>
+              <div>
+                <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Commandes</p>
+                <p className="text-xs font-black text-slate-900">
+                  {pendingOrders.length} commande(s)
+                </p>
+                <span className="text-[11px] text-indigo-800 font-semibold block">
+                  en attente de traitement
+                </span>
+              </div>
+            </div>
+            <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition" />
+          </Link>
+
+          <Link
+            href="/raw-materials"
+            className="bg-slate-50 hover:bg-slate-100/90 p-4 rounded-2xl border border-slate-200 transition flex items-center justify-between group cursor-pointer"
+          >
+            <div className="flex items-center gap-3">
+              <div
+                className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold shrink-0 border ${
+                  lowStockRMCount > 0
+                    ? 'bg-rose-100 text-rose-800 border-rose-200'
+                    : 'bg-emerald-100 text-emerald-800 border-emerald-200'
+                }`}
+              >
+                <Boxes className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Santé des Stocks</p>
+                <p className="text-xs font-black text-slate-900">
+                  {lowStockRMCount > 0 ? `${lowStockRMCount} ingrédient(s) bas` : 'Stocks optimaux (100%)'}
+                </p>
+                <span className={`text-[11px] font-semibold block ${lowStockRMCount > 0 ? 'text-rose-700' : 'text-emerald-700'}`}>
+                  {lowStockRMCount > 0 ? 'Réapprovisionner' : 'Aucune rupture'}
+                </span>
+              </div>
+            </div>
+            <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-1 transition" />
+          </Link>
         </div>
       </div>
 

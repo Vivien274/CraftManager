@@ -27,6 +27,7 @@ export default function RawMaterialsPage() {
 
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [stockFilter, setStockFilter] = useState<'all' | 'low' | 'normal'>('all');
   const [isAddMaterialOpen, setIsAddMaterialOpen] = useState(false);
   const [isAddSupplierOpen, setIsAddSupplierOpen] = useState(false);
 
@@ -63,10 +64,14 @@ export default function RawMaterialsPage() {
       m.name.toLowerCase().includes(search.toLowerCase()) ||
       m.category.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || m.category === categoryFilter;
-    return matchesSearch && matchesCategory;
+    const isLow = m.stock_quantity <= (m.min_stock_alert || 0);
+    const matchesStock =
+      stockFilter === 'all' || (stockFilter === 'low' && isLow) || (stockFilter === 'normal' && !isLow);
+
+    return matchesSearch && matchesCategory && matchesStock;
   });
 
-  const lowStockCount = rawMaterials.filter((m) => m.stock_quantity <= m.min_stock_alert).length;
+  const lowStockCount = rawMaterials.filter((m) => m.stock_quantity <= (m.min_stock_alert || 0)).length;
 
   const handleCreateMaterial = (e: React.FormEvent) => {
     e.preventDefault();
@@ -147,17 +152,58 @@ export default function RawMaterialsPage() {
         </div>
       )}
 
-      {/* Filter Bar */}
-      <div className="glass-panel p-4 rounded-xl flex flex-col md:flex-row items-center gap-4 justify-between bg-white">
-        <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
-          <input
-            type="text"
-            placeholder="Rechercher un ingrédient..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="glass-input w-full pl-9 text-xs"
-          />
+      {/* Filter Bar with Stock Level Pills */}
+      <div className="glass-panel p-4 rounded-2xl flex flex-col md:flex-row items-center gap-4 justify-between bg-white border border-slate-200 shadow-sm">
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+          <div className="relative w-full sm:w-64">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Rechercher un ingrédient..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="glass-input w-full pl-9 text-xs font-semibold text-slate-800"
+            />
+          </div>
+
+          {/* Stock Level Filter Buttons */}
+          <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto">
+            <button
+              onClick={() => setStockFilter('all')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer shrink-0 ${
+                stockFilter === 'all'
+                  ? 'bg-slate-900 text-white shadow-xs'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+            >
+              Tous ({rawMaterials.length})
+            </button>
+            <button
+              onClick={() => setStockFilter('low')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer shrink-0 flex items-center gap-1 ${
+                stockFilter === 'low'
+                  ? 'bg-rose-600 text-white shadow-xs'
+                  : 'bg-rose-50 text-rose-800 hover:bg-rose-100 border border-rose-200'
+              }`}
+            >
+              <span>🔴 En Alerte</span>
+              {lowStockCount > 0 && (
+                <span className="bg-rose-900 text-white text-[10px] font-black px-1.5 py-0.2 rounded-full">
+                  {lowStockCount}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => setStockFilter('normal')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer shrink-0 ${
+                stockFilter === 'normal'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200'
+              }`}
+            >
+              🟢 Optimaux
+            </button>
+          </div>
         </div>
 
         <div className="flex items-center gap-2 w-full md:w-auto">
@@ -165,7 +211,7 @@ export default function RawMaterialsPage() {
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="glass-input text-xs bg-white text-slate-800 border-slate-300"
+            className="glass-input text-xs font-bold bg-white text-slate-800 border-slate-300"
           >
             <option value="all">Toutes les catégories</option>
             {categories.map((c) => (
@@ -177,61 +223,83 @@ export default function RawMaterialsPage() {
         </div>
       </div>
 
-      {/* Raw Materials Table */}
-      <div className="glass-panel rounded-2xl overflow-hidden border border-slate-200/80 bg-white">
+      {/* Raw Materials Table with Visual Gauges */}
+      <div className="glass-panel rounded-3xl overflow-hidden border border-slate-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-700">
-            <thead className="bg-slate-100 text-slate-600 uppercase tracking-wider font-semibold border-b border-slate-200">
+            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider font-extrabold text-[10px] border-b border-slate-200">
               <tr>
                 <th className="px-6 py-3.5">Matière Première</th>
                 <th className="px-6 py-3.5">Catégorie</th>
                 <th className="px-6 py-3.5">Fournisseur</th>
-                <th className="px-6 py-3.5 text-right">Prix d'Achat Global</th>
-                <th className="px-6 py-3.5 text-right">Coût Unitaire (Calculé)</th>
-                <th className="px-6 py-3.5 text-right">Stock Restant</th>
-                <th className="px-6 py-3.5 text-center">Actions</th>
+                <th className="px-6 py-3.5 text-right">Prix d'Achat</th>
+                <th className="px-6 py-3.5 text-right">Coût Unitaire Réel</th>
+                <th className="px-6 py-3.5">Niveau & Jauge Stock</th>
+                <th className="px-6 py-3.5 text-center">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200">
+            <tbody className="divide-y divide-slate-100">
               {filteredMaterials.map((material) => {
                 const supplier = suppliers.find((s) => s.id === material.supplier_id);
-                const isLowStock = material.stock_quantity <= material.min_stock_alert;
+                const isLowStock = material.stock_quantity <= (material.min_stock_alert || 0);
+                const stockPercent = Math.min(
+                  100,
+                  Math.round((material.stock_quantity / (material.purchase_quantity || 1000)) * 100)
+                );
 
                 return (
-                  <tr key={material.id} className="hover:bg-slate-50 transition">
-                    <td className="px-6 py-4 font-bold text-slate-900">
-                      {material.name}
+                  <tr key={material.id} className="hover:bg-slate-50/70 transition">
+                    <td className="px-6 py-4">
+                      <span className="font-extrabold text-slate-900 text-sm block">{material.name}</span>
+                      <span className="text-[10px] text-slate-400 font-semibold">Seuil d'alerte : {material.min_stock_alert} {material.unit}</span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="inline-block whitespace-nowrap px-3 py-1 rounded-full bg-slate-100 text-slate-800 text-[11px] font-bold border border-slate-200">
+                      <span className="inline-block whitespace-nowrap px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 text-[11px] font-bold border border-slate-200">
                         {material.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-slate-600 font-medium">
-                      {supplier ? supplier.name : <span className="text-slate-400">Non rattaché</span>}
+                    <td className="px-6 py-4 text-slate-600 font-semibold">
+                      {supplier ? supplier.name : <span className="text-slate-400 font-normal italic">Non rattaché</span>}
                     </td>
-                    <td className="px-6 py-4 text-right font-medium text-slate-800">
+                    <td className="px-6 py-4 text-right font-bold text-slate-900">
                       {formatCurrency(material.purchase_price)}{' '}
-                      <span className="text-slate-500 font-normal">/ {material.purchase_quantity} {material.unit}</span>
+                      <span className="text-slate-400 font-normal text-[11px]">/ {material.purchase_quantity} {material.unit}</span>
                     </td>
-                    <td className="px-6 py-4 text-right font-bold text-amber-600">
-                      {formatCostPerUnit(material.cost_per_unit, material.unit)}
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium">
-                      <span
-                        className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${
-                          isLowStock
-                            ? 'bg-red-100 text-red-800 border border-red-200'
-                            : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                        }`}
-                      >
-                        {material.stock_quantity} {material.unit}
+                    <td className="px-6 py-4 text-right">
+                      <span className="px-2 py-0.5 rounded-md bg-amber-50 text-amber-900 border border-amber-200 font-black text-xs inline-block">
+                        {formatCostPerUnit(material.cost_per_unit, material.unit)}
                       </span>
+                    </td>
+                    <td className="px-6 py-4 min-w-44">
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="font-black text-slate-900">
+                            {material.stock_quantity} {material.unit}
+                          </span>
+                          <span
+                            className={`font-black text-[10px] px-2 py-0.2 rounded-full ${
+                              isLowStock
+                                ? 'bg-rose-100 text-rose-800 border border-rose-300'
+                                : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                            }`}
+                          >
+                            {isLowStock ? '⚠️ Stock Bas' : '🟢 OK'}
+                          </span>
+                        </div>
+                        <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-300 ${
+                              isLowStock ? 'bg-rose-500' : stockPercent < 40 ? 'bg-amber-500' : 'bg-emerald-500'
+                            }`}
+                            style={{ width: `${Math.max(8, stockPercent)}%` }}
+                          />
+                        </div>
+                      </div>
                     </td>
                     <td className="px-6 py-4 text-center">
                       <button
                         onClick={() => deleteRawMaterial(material.id)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition"
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer"
                         title="Supprimer"
                       >
                         <Trash2 className="w-4 h-4" />

@@ -411,7 +411,7 @@ function POSContent() {
                     : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
                 }`}
               >
-                <CreditCard className="w-4 h-4 text-indigo-600" /> Carte CB
+                <CreditCard className="w-4 h-4 text-indigo-600" /> Carte CB / SumUp
               </button>
               <button
                 onClick={() => setSelectedPayment('qr_transfer')}
@@ -435,6 +435,29 @@ function POSContent() {
               </button>
             </div>
           </div>
+
+          {/* SumUp / TPE Quick Trigger Banner */}
+          {selectedPayment === 'card' && cartTotal > 0 && (
+            <div className="bg-indigo-50/90 p-3 rounded-xl border border-indigo-200 space-y-2 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="font-extrabold text-indigo-950 flex items-center gap-1.5 text-[11px]">
+                  📱 Connexion Terminal TPE :
+                </span>
+                <span className="text-[10px] font-bold bg-indigo-200 text-indigo-900 px-2 py-0.5 rounded-full">
+                  Zéro Config
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-600 leading-snug">
+                En appuyant sur Valider, le montant de <strong>{formatCurrency(cartTotal)}</strong> sera transmis directement à votre lecteur SumUp / TPE.
+              </p>
+              <a
+                href={`sumupmerchant://pay/v1?amount=${cartTotal}&currency=EUR&title=Facture_CraftManager`}
+                className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 transition cursor-pointer shadow-xs block text-center"
+              >
+                ⚡ Déclencher SumUp ({formatCurrency(cartTotal)}) ↗
+              </a>
+            </div>
+          )}
 
           {/* Cash Change Dispenser & Quick Amount Buttons */}
           {selectedPayment === 'cash' && cartTotal > 0 && (

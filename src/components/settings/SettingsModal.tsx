@@ -23,6 +23,10 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [vatCustomMention, setVatCustomMention] = useState(
     organisation.vat_custom_mention || 'TVA non applicable, art. 293 B du CGI'
   );
+  const [paylibPhone, setPaylibPhone] = useState(organisation.paylib_phone || '06 12 34 56 78');
+  const [paypalMeLink, setPaypalMeLink] = useState(
+    organisation.paypal_me_link || 'https://paypal.me/AtelierRestanques'
+  );
   const [resendApiKey, setResendApiKey] = useState(organisation.resend_api_key || '');
   const [resendFromEmail, setResendFromEmail] = useState(organisation.resend_from_email || '');
   const [fullName, setFullName] = useState('');
@@ -115,6 +119,8 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         vat_mode: vatMode,
         vat_number: vatNumber,
         vat_custom_mention: vatCustomMention,
+        paylib_phone: paylibPhone,
+        paypal_me_link: paypalMeLink,
         resend_api_key: resendApiKey,
         resend_from_email: resendFromEmail,
       });
@@ -354,6 +360,35 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   />
                 </div>
               )}
+            </div>
+
+            {/* Paylib / Wero & PayPal QR Payments Section */}
+            <div className="pt-3 border-t border-slate-200 space-y-3">
+              <h3 className="font-extrabold text-xs text-slate-900 flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
+                📱 Paiements QR Code (Paylib / Wero / PayPal)
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1 text-[11px]">N° Téléphone Paylib / Wero</label>
+                  <input
+                    type="text"
+                    value={paylibPhone}
+                    onChange={(e) => setPaylibPhone(e.target.value)}
+                    placeholder="ex: 06 12 34 56 78"
+                    className="glass-input w-full font-bold"
+                  />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1 text-[11px]">Lien / Pseudo PayPal.me</label>
+                  <input
+                    type="text"
+                    value={paypalMeLink}
+                    onChange={(e) => setPaypalMeLink(e.target.value)}
+                    placeholder="ex: https://paypal.me/VotreAtelier"
+                    className="glass-input w-full font-semibold"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Data Safety & 1-Click Backup Export */}

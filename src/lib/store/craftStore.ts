@@ -36,6 +36,8 @@ const DEFAULT_ORG: Organisation = {
   email: 'contact@atelier-restanques.fr',
   vat_mode: 'exempt',
   vat_custom_mention: 'TVA non applicable, art. 293 B du CGI',
+  paylib_phone: '06 12 34 56 78',
+  paypal_me_link: 'https://paypal.me/AtelierRestanques',
   created_at: new Date().toISOString(),
 };
 

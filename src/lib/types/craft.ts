@@ -26,6 +26,8 @@ export interface Organisation {
   vat_custom_mention?: string;
   resend_api_key?: string;
   resend_from_email?: string;
+  paylib_phone?: string;
+  paypal_me_link?: string;
   created_at: string;
 }
 

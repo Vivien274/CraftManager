@@ -40,6 +40,7 @@ export default function POSPage() {
 function POSContent() {
   const {
     isLoaded,
+    organisation,
     products,
     cart,
     addToCart,
@@ -53,6 +54,7 @@ function POSContent() {
   const [selectedChannel, setSelectedChannel] = useState<SaleChannel>('market');
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>('cash');
   const [terminalType, setTerminalType] = useState<'sumup' | 'mypos' | 'zettle'>('sumup');
+  const [qrMode, setQrMode] = useState<'paylib' | 'paypal'>('paylib');
   const [givenAmount, setGivenAmount] = useState<number>(0);
   const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
   const [lastCompletedSale, setLastCompletedSale] = useState<any>(null);
@@ -506,6 +508,73 @@ function POSContent() {
                 >
                   ⚡ Payer {formatCurrency(cartTotal)} sur Zettle ↗
                 </a>
+              )}
+            </div>
+          )}
+
+          {/* QR Code Paylib / Wero / PayPal Display Panel */}
+          {selectedPayment === 'qr_transfer' && cartTotal > 0 && (
+            <div className="bg-purple-50/90 p-4 rounded-2xl border border-purple-200 space-y-3 text-xs text-center shadow-xs">
+              <div className="flex items-center justify-between">
+                <span className="font-extrabold text-purple-950 flex items-center gap-1.5 text-[11px]">
+                  📱 QR Code Paylib / Wero / PayPal
+                </span>
+                <span className="text-[10px] font-bold bg-purple-200 text-purple-900 px-2 py-0.5 rounded-full">
+                  Scan Instantané
+                </span>
+              </div>
+
+              {/* Mode Switcher */}
+              <div className="grid grid-cols-2 gap-1 bg-white p-1 rounded-xl border border-purple-100 font-bold text-[11px]">
+                <button
+                  onClick={() => setQrMode('paylib')}
+                  className={`py-1.5 rounded-lg transition cursor-pointer ${
+                    qrMode === 'paylib' ? 'bg-purple-600 text-white shadow-xs' : 'text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  Paylib / Wero (Banque)
+                </button>
+                <button
+                  onClick={() => setQrMode('paypal')}
+                  className={`py-1.5 rounded-lg transition cursor-pointer ${
+                    qrMode === 'paypal' ? 'bg-purple-600 text-white shadow-xs' : 'text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  PayPal.me
+                </button>
+              </div>
+
+              {/* QR Code Graphic */}
+              <div className="bg-white p-3 rounded-2xl border border-purple-200 inline-block shadow-sm">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
+                    qrMode === 'paylib'
+                      ? `PROMPT_PAYLIB:${organisation.paylib_phone || '0612345678'};AMOUNT:${cartTotal}`
+                      : `${organisation.paypal_me_link || 'https://paypal.me/AtelierRestanques'}/${cartTotal}`
+                  )}`}
+                  alt="QR Code Paiement Instantané"
+                  className="w-40 h-40 mx-auto rounded-lg"
+                />
+              </div>
+
+              {qrMode === 'paylib' ? (
+                <div className="space-y-1">
+                  <p className="text-[11px] font-bold text-purple-950">
+                    Scanner avec l'application bancaire ou l'appareil photo du client
+                  </p>
+                  <p className="text-[11px] font-mono text-slate-600">
+                    N° Paylib / Wero : <strong>{organisation.paylib_phone || '06 12 34 56 78'}</strong>
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <p className="text-[11px] font-bold text-purple-950">
+                    Lien PayPal.me direct ({formatCurrency(cartTotal)})
+                  </p>
+                  <p className="text-[10px] font-mono text-slate-500 truncate">
+                    {organisation.paypal_me_link || 'https://paypal.me/AtelierRestanques'}/{cartTotal}
+                  </p>
+                </div>
               )}
             </div>
           )}

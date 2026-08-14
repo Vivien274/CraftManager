@@ -1,10 +1,8 @@
-'use client';
-
 import { useState, useEffect } from 'react';
-import { Store, User, Coins, Tag, Save, CheckCircle2, X, FileSpreadsheet } from 'lucide-react';
+import { Store, User, Coins, Tag, Save, CheckCircle2, X, FileSpreadsheet, FileText, MapPin, Phone, Mail, Percent } from 'lucide-react';
 import { useCraftStore } from '@/lib/store/craftStore';
 import { createClient } from '@/lib/supabase/client';
-import { CraftType, Organisation } from '@/lib/types/craft';
+import { CraftType, Organisation, VatMode } from '@/lib/types/craft';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -16,6 +14,15 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [name, setName] = useState(organisation.name || "L'Atelier des Restanques");
   const [craftType, setCraftType] = useState<CraftType>(organisation.craft_type || 'savonnerie');
   const [currency, setCurrency] = useState(organisation.currency || 'EUR');
+  const [siret, setSiret] = useState(organisation.siret || '892 341 590 00012');
+  const [address, setAddress] = useState(organisation.address || '14 Rue Saint-Ferréol, 13001 Marseille');
+  const [phone, setPhone] = useState(organisation.phone || '04 91 00 20 30');
+  const [orgEmail, setOrgEmail] = useState(organisation.email || 'contact@atelier-restanques.fr');
+  const [vatMode, setVatMode] = useState<VatMode>(organisation.vat_mode || 'exempt');
+  const [vatNumber, setVatNumber] = useState(organisation.vat_number || '');
+  const [vatCustomMention, setVatCustomMention] = useState(
+    organisation.vat_custom_mention || 'TVA non applicable, art. 293 B du CGI'
+  );
   const [fullName, setFullName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [savedSuccess, setSavedSuccess] = useState(false);
@@ -26,6 +33,15 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     setName(organisation.name || "L'Atelier des Restanques");
     setCraftType(organisation.craft_type || 'savonnerie');
     setCurrency(organisation.currency || 'EUR');
+    setSiret(organisation.siret || '892 341 590 00012');
+    setAddress(organisation.address || '14 Rue Saint-Ferréol, 13001 Marseille');
+    setPhone(organisation.phone || '04 91 00 20 30');
+    setOrgEmail(organisation.email || 'contact@atelier-restanques.fr');
+    setVatMode(organisation.vat_mode || 'exempt');
+    setVatNumber(organisation.vat_number || '');
+    setVatCustomMention(
+      organisation.vat_custom_mention || 'TVA non applicable, art. 293 B du CGI'
+    );
 
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => {
@@ -40,6 +56,19 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
   if (!isOpen) return null;
 
+  const handleVatModeChange = (mode: VatMode) => {
+    setVatMode(mode);
+    if (mode === 'exempt') {
+      setVatCustomMention('TVA non applicable, art. 293 B du CGI');
+    } else if (mode === '20') {
+      setVatCustomMention('TVA appliquée au taux normal de 20%');
+    } else if (mode === '10') {
+      setVatCustomMention('TVA appliquée au taux intermédiaire de 10%');
+    } else if (mode === '5.5') {
+      setVatCustomMention('TVA appliquée au taux réduit de 5.5%');
+    }
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -50,6 +79,13 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         name,
         craft_type: craftType,
         currency,
+        siret,
+        address,
+        phone,
+        email: orgEmail,
+        vat_mode: vatMode,
+        vat_number: vatNumber,
+        vat_custom_mention: vatCustomMention,
       });
 
       const supabase = createClient();
@@ -173,6 +209,120 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   <option value="USD">$ Dollar US</option>
                 </select>
               </div>
+            </div>
+          </div>
+
+          {/* Legal & VAT Details Section for Invoices */}
+          <div className="pt-3 border-t border-slate-200 space-y-3">
+            <h3 className="font-extrabold text-xs text-slate-900 flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
+              <FileText className="w-4 h-4 text-indigo-600" />
+              Coordonnées Légales & TVA (Pour les Factures)
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block font-bold text-slate-700 mb-1 text-[11px]">N° SIREN / SIRET</label>
+                <div className="relative">
+                  <FileText className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={siret}
+                    onChange={(e) => setSiret(e.target.value)}
+                    placeholder="ex: 892 341 590 00012"
+                    className="glass-input w-full font-mono text-xs"
+                    style={{ paddingLeft: '2.25rem' }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 mb-1 text-[11px]">Téléphone Atelier</label>
+                <div className="relative">
+                  <Phone className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="ex: 04 91 00 20 30"
+                    className="glass-input w-full text-xs"
+                    style={{ paddingLeft: '2.25rem' }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="block font-bold text-slate-700 mb-1 text-[11px]">Adresse Complète de l'Atelier</label>
+              <div className="relative">
+                <MapPin className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="ex: 14 Rue Saint-Ferréol, 13001 Marseille"
+                  className="glass-input w-full text-xs font-medium"
+                  style={{ paddingLeft: '2.25rem' }}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block font-bold text-slate-700 mb-1 text-[11px]">Email Pro Atelier (sur Facture)</label>
+              <div className="relative">
+                <Mail className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="email"
+                  value={orgEmail}
+                  onChange={(e) => setOrgEmail(e.target.value)}
+                  placeholder="ex: contact@atelier.fr"
+                  className="glass-input w-full text-xs font-mono"
+                  style={{ paddingLeft: '2.25rem' }}
+                />
+              </div>
+            </div>
+
+            {/* VAT Mode Selection */}
+            <div className="p-3 bg-indigo-50/70 border border-indigo-100 rounded-2xl space-y-2">
+              <label className="block font-bold text-indigo-950 text-[11px]">Régime TVA sur vos Factures :</label>
+              <select
+                value={vatMode}
+                onChange={(e) => handleVatModeChange(e.target.value as VatMode)}
+                className="glass-input w-full text-xs font-bold bg-white text-slate-900"
+              >
+                <option value="exempt">🟢 Non-assujetti / Exonéré (TVA non applicable, art. 293 B du CGI)</option>
+                <option value="20">🔵 TVA 20% (Taux normal)</option>
+                <option value="10">🟣 TVA 10% (Taux intermédiaire)</option>
+                <option value="5.5">🟡 TVA 5,5% (Taux réduit)</option>
+                <option value="custom">✏️ Mention spécifique sur mesure</option>
+              </select>
+
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 mb-1">
+                  Mention Légale affichée au bas de la facture :
+                </label>
+                <input
+                  type="text"
+                  value={vatCustomMention}
+                  onChange={(e) => setVatCustomMention(e.target.value)}
+                  placeholder="ex: TVA non applicable, art. 293 B du CGI"
+                  className="glass-input w-full text-xs font-semibold bg-white"
+                />
+              </div>
+
+              {vatMode !== 'exempt' && (
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 mb-1">
+                    N° TVA Intracommunautaire (optionnel) :
+                  </label>
+                  <input
+                    type="text"
+                    value={vatNumber}
+                    onChange={(e) => setVatNumber(e.target.value)}
+                    placeholder="ex: FR 32 892341590"
+                    className="glass-input w-full text-xs font-mono bg-white"
+                  />
+                </div>
+              )}
             </div>
           </div>
 

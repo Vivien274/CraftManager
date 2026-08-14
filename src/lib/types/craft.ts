@@ -9,12 +9,21 @@ export type SaleChannel = 'market' | 'direct' | 'web';
 
 export type PaymentMethod = 'cash' | 'card' | 'qr_transfer' | 'gift';
 
+export type VatMode = 'exempt' | '20' | '10' | '5.5' | 'custom';
+
 export interface Organisation {
   id: string;
   name: string;
   craft_type: CraftType;
   currency: string; // 'EUR' | 'USD' | 'CHF'
   plan_tier?: PlanTier;
+  siret?: string;
+  vat_number?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  vat_mode?: VatMode;
+  vat_custom_mention?: string;
   created_at: string;
 }
 

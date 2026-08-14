@@ -28,6 +28,12 @@ const DEFAULT_ORG: Organisation = {
   craft_type: 'savonnerie',
   currency: 'EUR',
   plan_tier: 'expert',
+  siret: '892 341 590 00012',
+  address: '14 Rue Saint-Ferréol, 13001 Marseille',
+  phone: '04 91 00 20 30',
+  email: 'contact@atelier-restanques.fr',
+  vat_mode: 'exempt',
+  vat_custom_mention: 'TVA non applicable, art. 293 B du CGI',
   created_at: new Date().toISOString(),
 };
 

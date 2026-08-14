@@ -43,10 +43,11 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-slate-200 shadow-xl space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white mx-auto shadow-lg shadow-amber-500/20">
-            <Sparkles className="w-8 h-8" />
-          </div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Craft Manager</h1>
+          <img
+            src="/logo.png"
+            alt="Craft Manager"
+            className="h-12 w-auto mx-auto object-contain mb-2"
+          />
           <p className="text-xs font-semibold text-slate-500">
             Connexion à votre espace Savonnerie Artisanale
           </p>

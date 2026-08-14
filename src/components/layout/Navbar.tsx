@@ -95,17 +95,12 @@ export default function Navbar() {
               {isMobileMenuOpen ? <X className="w-5 h-5 text-indigo-600" /> : <Menu className="w-5 h-5" />}
             </button>
 
-            <Link href="/" className="flex items-center space-x-2 group">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-indigo-600 to-purple-600 p-[2px] shadow-md shadow-indigo-500/10 group-hover:scale-105 transition-transform">
-                <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center">
-                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
-                </div>
-              </div>
-              <div>
-                <span className="font-extrabold text-base sm:text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-indigo-900 to-amber-700">
-                  Craft Manager
-                </span>
-              </div>
+            <Link href="/" className="flex items-center group">
+              <img
+                src="/logo.png"
+                alt="Craft Manager"
+                className="h-8 sm:h-9 w-auto object-contain group-hover:scale-105 transition-transform"
+              />
             </Link>
 
             <button

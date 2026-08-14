@@ -18,6 +18,7 @@ import {
   OrderItem,
   OrderStatus,
   PaymentStatus,
+  PlanTier,
 } from '../types/craft';
 import { createClient } from '../supabase/client';
 
@@ -121,6 +122,7 @@ export function useCraftStore() {
 
         // 1. Load LocalStorage initial cache first (so UI is instant and offline items exist)
         const savedOrg = localStorage.getItem('craft_org');
+        const savedPlan = localStorage.getItem('craft_plan_tier') as PlanTier | null;
         const savedSuppliers = localStorage.getItem('craft_suppliers');
         const savedRM = localStorage.getItem('craft_raw_materials');
         const savedRecipes = localStorage.getItem('craft_recipes');
@@ -131,7 +133,11 @@ export function useCraftStore() {
         const savedClients = localStorage.getItem('craft_clients');
         const savedOrders = localStorage.getItem('craft_orders');
 
-        if (savedOrg) setOrganisation(JSON.parse(savedOrg));
+        if (savedOrg) {
+          const parsedOrg = JSON.parse(savedOrg);
+          if (savedPlan) parsedOrg.plan_tier = savedPlan;
+          setOrganisation(parsedOrg);
+        }
         if (savedSuppliers) setSuppliers(JSON.parse(savedSuppliers));
         if (savedRM) setRawMaterials(JSON.parse(savedRM));
         if (savedRecipes) setRecipes(JSON.parse(savedRecipes));
@@ -185,6 +191,10 @@ export function useCraftStore() {
 
           if (profile && profile.organisations) {
             const orgObj = profile.organisations as Organisation;
+            const currentSavedPlan = localStorage.getItem('craft_plan_tier') as PlanTier | null;
+            if (currentSavedPlan) {
+              orgObj.plan_tier = currentSavedPlan;
+            }
             setOrganisation(orgObj);
             localStorage.setItem('craft_org', JSON.stringify(orgObj));
           }
@@ -236,9 +246,12 @@ export function useCraftStore() {
 
     const handleStoreSync = () => {
       const savedOrg = localStorage.getItem('craft_org');
+      const savedPlan = localStorage.getItem('craft_plan_tier') as PlanTier | null;
       if (savedOrg) {
         try {
-          setOrganisation(JSON.parse(savedOrg));
+          const parsed = JSON.parse(savedOrg);
+          if (savedPlan) parsed.plan_tier = savedPlan;
+          setOrganisation(parsed);
         } catch (e) {}
       }
     };
@@ -252,6 +265,9 @@ export function useCraftStore() {
   }, []);
 
   const saveOrganisation = (newOrg: Organisation) => {
+    if (newOrg.plan_tier) {
+      localStorage.setItem('craft_plan_tier', newOrg.plan_tier);
+    }
     setOrganisation(newOrg);
     localStorage.setItem('craft_org', JSON.stringify(newOrg));
     if (typeof window !== 'undefined') {

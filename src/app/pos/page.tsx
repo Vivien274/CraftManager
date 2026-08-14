@@ -111,9 +111,9 @@ function POSContent() {
     setLinkedOrder(order);
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (cart.length === 0) return;
-    const sale = completeSale(selectedChannel, selectedPayment);
+    const sale = await completeSale(selectedChannel, selectedPayment);
     if (sale) {
       if (linkedOrder) {
         updateOrderPaymentStatus(linkedOrder.id, 'paid');

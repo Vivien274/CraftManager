@@ -3,9 +3,10 @@ import { Product, ProductIngredient, RawMaterial } from '../types/craft';
 /**
  * Formats monetary amounts (default EUR €)
  */
-export function formatCurrency(amount: number, currency: string = 'EUR'): string {
+export function formatCurrency(amount: number | undefined | null, currency: string = 'EUR'): string {
   const symbol = currency === 'USD' ? '$' : currency === 'CHF' ? 'CHF' : '€';
-  const formatted = amount.toFixed(2).replace('.', ',');
+  const val = typeof amount === 'number' && !isNaN(amount) ? amount : 0;
+  const formatted = val.toFixed(2).replace('.', ',');
   return `${formatted} ${symbol}`;
 }
 

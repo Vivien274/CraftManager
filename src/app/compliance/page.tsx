@@ -115,22 +115,16 @@ function ComplianceContent() {
       ) : (
         <>
           {/* Header Banner */}
-      <div className="glass-panel p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white shadow-sm border border-slate-200">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-amber-100 text-amber-900 border border-amber-300">
-              Règlement CE 1223/2009 • Savonnerie Artisanale
-            </span>
-            <span className="text-xs text-slate-500 font-medium">Dossier de Information Produit (DIP)</span>
-          </div>
-          <h1 className="text-2xl font-black tracking-tight text-slate-900 flex items-center gap-2">
-            <ShieldCheck className="w-7 h-7 text-indigo-600" />
-            Conformité Savonnerie, Formules INCI & Allergènes
-          </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Génération automatique de la liste INCI officielle, détection des 26 allergènes cosmétiques et étiquetage légal.
-          </p>
-        </div>
+          <div className="glass-panel p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white shadow-sm border border-slate-200">
+            <div>
+              <h1 className="text-xl font-black tracking-tight text-slate-900 flex items-center gap-2">
+                <ShieldCheck className="w-6 h-6 text-indigo-600" />
+                Dossier de Information Produit (DIP) & Formules INCI
+              </h1>
+              <p className="text-xs text-slate-500 font-semibold mt-0.5">
+                Règlement CE 1223/2009 — Liste INCI officielle, détection des 26 allergènes et étiquetage légal.
+              </p>
+            </div>
 
         {/* Product Selector Dropdown */}
         <div className="w-full sm:w-auto">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Store, User, Coins, Tag, Save, CheckCircle2, X, FileSpreadsheet, FileText, MapPin, Phone, Mail, Percent } from 'lucide-react';
+import { Store, User, Coins, Tag, Save, CheckCircle2, X, FileSpreadsheet, FileText, MapPin, Phone, Mail, Percent, Download, Upload, ShieldCheck } from 'lucide-react';
 import { useCraftStore } from '@/lib/store/craftStore';
 import { createClient } from '@/lib/supabase/client';
 import { CraftType, Organisation, VatMode } from '@/lib/types/craft';
@@ -30,6 +30,31 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [importing, setImporting] = useState(false);
+
+  const handleExportBackup = () => {
+    const backupData = {
+      export_date: new Date().toISOString(),
+      organisation: localStorage.getItem('craft_org') ? JSON.parse(localStorage.getItem('craft_org')!) : null,
+      suppliers: localStorage.getItem('craft_suppliers') ? JSON.parse(localStorage.getItem('craft_suppliers')!) : [],
+      raw_materials: localStorage.getItem('craft_raw_materials') ? JSON.parse(localStorage.getItem('craft_raw_materials')!) : [],
+      recipes: localStorage.getItem('craft_recipes') ? JSON.parse(localStorage.getItem('craft_recipes')!) : [],
+      products: localStorage.getItem('craft_products') ? JSON.parse(localStorage.getItem('craft_products')!) : [],
+      batches: localStorage.getItem('craft_batches') ? JSON.parse(localStorage.getItem('craft_batches')!) : [],
+      sales: localStorage.getItem('craft_sales') ? JSON.parse(localStorage.getItem('craft_sales')!) : [],
+      expenses: localStorage.getItem('craft_expenses') ? JSON.parse(localStorage.getItem('craft_expenses')!) : [],
+      clients: localStorage.getItem('craft_clients') ? JSON.parse(localStorage.getItem('craft_clients')!) : [],
+      orders: localStorage.getItem('craft_orders') ? JSON.parse(localStorage.getItem('craft_orders')!) : [],
+      cleaning_logs: localStorage.getItem('craft_cleaning_logs') ? JSON.parse(localStorage.getItem('craft_cleaning_logs')!) : [],
+    };
+
+    const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Sauvegarde_CraftManager_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   useEffect(() => {
     setName(organisation.name || "L'Atelier des Restanques");
@@ -329,6 +354,30 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   />
                 </div>
               )}
+            </div>
+
+            {/* Data Safety & 1-Click Backup Export */}
+            <div className="p-3.5 bg-slate-900 text-white rounded-2xl space-y-2.5 shadow-md">
+              <div className="flex items-center justify-between">
+                <span className="font-extrabold text-xs flex items-center gap-1.5 text-indigo-300">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  Sauvegarde & Sécurité des Données (1-Clic)
+                </span>
+                <span className="text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-full">
+                  Redondance Cloud + Local
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-300 leading-snug">
+                Téléchargez l'intégralité de vos données d'atelier (recettes, fournitures, fournées, factures, registre hygiène) dans un fichier de sauvegarde réexploitable.
+              </p>
+              <button
+                type="button"
+                onClick={handleExportBackup}
+                className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer shadow-sm"
+              >
+                <Download className="w-4 h-4" />
+                <span>💾 Télécharger la Sauvegarde Complète de l'Atelier (.json)</span>
+              </button>
             </div>
           </div>
 

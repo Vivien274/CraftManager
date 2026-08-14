@@ -113,26 +113,20 @@ export default function CleaningLogSection() {
   return (
     <div className="space-y-6">
       {/* Top Banner & Actions - Screen only */}
-      <div className="glass-panel p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white shadow-sm border border-slate-200 print:hidden">
+      <div className="glass-panel p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white shadow-sm border border-slate-200 print:hidden">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-900 border border-emerald-300">
-              Bonnes Pratiques de Fabrication (BPF ISO 22716)
-            </span>
-            <span className="text-xs text-slate-500 font-medium">Registre Hygiène & Sanitaire</span>
-          </div>
-          <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
-            🧹 Carnet de Nettoyage & Désinfection d'Atelier
+          <h2 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+            <span>🧹</span> Carnet de Nettoyage & Désinfection
           </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Journal sanitaire réglementaire pour le suivi des désinfections, zones nettoyées et produits utilisés.
+          <p className="text-xs text-slate-500 font-semibold mt-0.5">
+            Registre Sanitaire BPF ISO 22716 — Suivi des zones, désinfections et produits utilisés
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             onClick={handleQuickClean}
-            className="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
+            className="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition cursor-pointer"
             title="Consigne immédiatement un nettoyage rapide du plan de travail à l'alcool 70%"
           >
             <Zap className="w-3.5 h-3.5 text-emerald-600 fill-emerald-600" />
@@ -141,15 +135,15 @@ export default function CleaningLogSection() {
 
           <button
             onClick={handlePrintRegistry}
-            className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer shadow-sm"
+            className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
           >
-            <Printer className="w-3.5 h-3.5" />
+            <Printer className="w-3.5 h-3.5 text-slate-600" />
             <span>Imprimer Registre BPF</span>
           </button>
 
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition shadow-md cursor-pointer"
+            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-black flex items-center gap-1.5 transition shadow-sm cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Consigner une Intervention</span>

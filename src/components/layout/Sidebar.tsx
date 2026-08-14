@@ -93,17 +93,6 @@ export default function Sidebar() {
           );
         })}
       </nav>
-
-      {/* Organization Badge Footer */}
-      <div className="pt-4 border-t border-slate-200 mt-auto">
-        <div className="bg-slate-100/90 rounded-xl p-3 border border-slate-200 text-xs text-slate-600 flex items-center space-x-2">
-          <Sliders className="w-4 h-4 text-indigo-600 shrink-0" />
-          <div className="truncate">
-            <p className="font-bold text-slate-800 truncate">SaaS Multi-Tenant</p>
-            <p className="text-[10px] text-slate-500 font-medium">RLS Active • Mode Clair</p>
-          </div>
-        </div>
-      </div>
     </aside>
   );
 }

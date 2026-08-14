@@ -105,81 +105,81 @@ export default function Navbar() {
 
             <button
               onClick={() => setIsSettingsOpen(true)}
-              className="hidden md:flex items-center text-xs text-slate-500 pl-4 border-l border-slate-200 space-x-2 hover:bg-slate-100/80 px-2 py-1 rounded-xl transition cursor-pointer"
-              title="Cliquer pour modifier les paramètres de l'Atelier"
+              className="hidden md:flex items-center text-xs text-slate-600 pl-4 border-l border-slate-200 space-x-1.5 hover:bg-slate-100/80 px-2.5 py-1 rounded-xl transition cursor-pointer"
+              title="Paramètres de l'Atelier"
             >
-              <Store className="w-3.5 h-3.5 text-amber-600" />
+              <Store className="w-3.5 h-3.5 text-amber-600 shrink-0" />
               <span className="font-bold text-slate-800">{organisation.name || "L'Atelier des Restanques"}</span>
-              <span className="px-2 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 rounded text-[11px] font-bold flex items-center gap-1">
-                <span>🧼 {organisation.craft_type || 'Savonnerie'}</span>
-                <Settings className="w-3 h-3 text-slate-500" />
-              </span>
+              <Settings className="w-3 h-3 text-slate-400 shrink-0" />
             </button>
           </div>
 
-          {/* Right Actions: Pricing Badge, Didacticiel, Settings, Auth Profile & POS Button */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Plan Tier Badge Button */}
+          {/* Right Actions: Clean & Uncluttered Header Controls */}
+          <div className="flex items-center space-x-2">
+            {/* Plan Tier Badge */}
             <button
               onClick={() => setIsPricingOpen(true)}
-              className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition border shadow-2xs cursor-pointer ${planConfig.bgColor} ${planConfig.color} ${planConfig.borderColor} hover:opacity-90`}
+              className={`hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] font-black transition border cursor-pointer ${planConfig.bgColor} ${planConfig.color} ${planConfig.borderColor} hover:opacity-90`}
               title="Gérer mon abonnement"
             >
-              <Crown className="w-3.5 h-3.5" />
+              <Crown className="w-3 h-3" />
               <span>{planConfig.badge}</span>
             </button>
 
+            {/* Didacticiel */}
             <button
               onClick={() => setIsOnboardingOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-950 rounded-xl text-xs font-extrabold transition border border-amber-300 shadow-2xs"
+              className="flex items-center gap-1 px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-950 rounded-xl text-xs font-bold transition border border-amber-200"
+              title="Ouvrir le Didacticiel"
             >
-              <GraduationCap className="w-4 h-4 text-amber-600" />
-              <span className="hidden sm:inline">Didacticiel</span>
+              <GraduationCap className="w-3.5 h-3.5 text-amber-600" />
+              <span className="hidden sm:inline">Aide</span>
             </button>
 
+            {/* User Profile & Sign Out */}
             {user ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 border-l border-slate-200 pl-2">
                 <button
                   onClick={() => setIsSettingsOpen(true)}
-                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs font-bold text-slate-800 border border-slate-200 transition cursor-pointer"
-                  title="Paramètres de l'Atelier"
+                  className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs font-bold text-slate-700 transition"
+                  title="Paramètres du compte"
                 >
                   <User className="w-3.5 h-3.5 text-indigo-600" />
-                  <span className="line-clamp-1 max-w-[120px]">{user.user_metadata?.full_name || user.email}</span>
-                  <Settings className="w-3 h-3 text-slate-400" />
+                  <span className="max-w-[100px] truncate">
+                    {user.user_metadata?.full_name?.split(' ')[0] || 'Compte'}
+                  </span>
                 </button>
                 <button
                   onClick={handleSignOut}
-                  className="p-2 text-slate-500 hover:text-red-600 hover:bg-slate-100 rounded-xl transition text-xs font-bold flex items-center gap-1"
+                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition"
                   title="Se déconnecter"
                 >
                   <LogOut className="w-4 h-4" />
-                  <span className="hidden md:inline">Déconnexion</span>
                 </button>
               </div>
             ) : (
               <Link
                 href="/auth/login"
-                className="flex items-center gap-1 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition border border-slate-200"
+                className="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition border border-slate-200"
               >
-                <LogIn className="w-4 h-4 text-indigo-600" />
+                <LogIn className="w-3.5 h-3.5 text-indigo-600" />
                 <span>Connexion</span>
               </Link>
             )}
 
+            {/* Caisse POS Button */}
             <Link
               href="/pos"
-              className={`flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-md ${
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm ${
                 pathname === '/pos'
                   ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-amber-500/25 ring-2 ring-amber-400/50'
                   : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-600/20'
               }`}
             >
-              <ShoppingBag className="w-4 h-4" />
-              <span className="hidden xs:inline">Caisse Tactile</span>
-              <span className="xs:hidden">Caisse</span>
+              <ShoppingBag className="w-3.5 h-3.5" />
+              <span>Caisse</span>
               {cartCount > 0 && (
-                <span className="ml-1 px-2 py-0.5 text-xs font-bold bg-white text-indigo-900 rounded-full">
+                <span className="ml-0.5 px-1.5 py-0.2 text-[10px] font-bold bg-white text-indigo-900 rounded-full">
                   {cartCount}
                 </span>
               )}

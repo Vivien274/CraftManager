@@ -10,6 +10,14 @@ export const metadata: Metadata = {
   title: 'Craft Manager - Gestionnaire de Production & Caisse pour Artisans',
   description:
     'SaaS de gestion de matières premières, coût de revient, suivi de cure/séchage et caisse tactile pour artisans.',
+  icons: {
+    icon: [
+      { url: '/icon.png', type: 'image/png' },
+      { url: '/favicon.ico' },
+    ],
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({

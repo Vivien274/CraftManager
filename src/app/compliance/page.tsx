@@ -21,13 +21,14 @@ import {
   generateCLPDetails,
 } from '@/lib/utils/compliance';
 import FeatureGate from '@/components/common/FeatureGate';
+import CleaningLogSection from '@/components/compliance/CleaningLogSection';
 
 export default function CompliancePage() {
   return (
     <FeatureGate
       feature="compliance"
-      title="Conformité Réglementaire Cosmétique (DIP / CLP / INCI)"
-      description="Générez la liste INCI légale, calculez les 26 allergènes et éditez vos fiches laboratoire avec la Formule Expert."
+      title="Conformité Réglementaire Cosmétique & Sanitaire BPF"
+      description="Générez la liste INCI légale, les 26 allergènes et suivez le registre de nettoyage & désinfection BPF ISO 22716."
       requiredTier="expert"
     >
       <ComplianceContent />
@@ -38,6 +39,7 @@ export default function CompliancePage() {
 function ComplianceContent() {
   const { isLoaded, products, rawMaterials, batches } = useCraftStore();
 
+  const [mainSectionTab, setMainSectionTab] = useState<'dip' | 'cleaning'>('dip');
   const [selectedProductId, setSelectedProductId] = useState<string>(products[0]?.id || '');
   const [activeTab, setActiveTab] = useState<'inci' | 'allergens' | 'clp' | 'label'>('inci');
   const [copiedText, setCopiedText] = useState(false);
@@ -82,7 +84,37 @@ function ComplianceContent() {
 
   return (
     <div className="space-y-6">
-      {/* Header Banner */}
+      {/* Main Module Tab Switcher */}
+      <div className="flex bg-slate-200/80 p-1.5 rounded-2xl w-fit border border-slate-300 print:hidden">
+        <button
+          onClick={() => setMainSectionTab('dip')}
+          className={`px-5 py-2 rounded-xl font-extrabold text-xs transition cursor-pointer flex items-center gap-2 ${
+            mainSectionTab === 'dip'
+              ? 'bg-white text-indigo-900 shadow-md'
+              : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <ShieldCheck className="w-4 h-4 text-indigo-600" />
+          <span>Formules INCI, Allergènes & DIP</span>
+        </button>
+
+        <button
+          onClick={() => setMainSectionTab('cleaning')}
+          className={`px-5 py-2 rounded-xl font-extrabold text-xs transition cursor-pointer flex items-center gap-2 ${
+            mainSectionTab === 'cleaning'
+              ? 'bg-white text-indigo-900 shadow-md'
+              : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <span>🧹 Registre Nettoyage & Désinfection (BPF)</span>
+        </button>
+      </div>
+
+      {mainSectionTab === 'cleaning' ? (
+        <CleaningLogSection />
+      ) : (
+        <>
+          {/* Header Banner */}
       <div className="glass-panel p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white shadow-sm border border-slate-200">
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -376,19 +408,21 @@ function ComplianceContent() {
         </div>
       )}
 
-      {/* TAB 4: CLP FOR CANDLES */}
-      {activeTab === 'clp' && (
-        <div className="glass-panel p-6 rounded-2xl bg-white border border-slate-200 space-y-4 shadow-sm">
-          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <Flame className="w-5 h-5 text-amber-500" />
-            Étiquette CLP & Conseils Sécurité AFNOR (Bougies / Senteurs)
-          </h2>
-          <div className="p-4 bg-slate-900 text-white rounded-xl space-y-2 font-mono text-xs">
-            <div className="text-amber-400 font-bold uppercase text-[11px]">Pictogrammes requis : GHS07 (Sensibilisant), GHS09 (Environnement)</div>
-            <p>H317 : Peut provoquer une allergie cutanée.</p>
-            <p>P102 : Tenir hors de portée des enfants.</p>
-          </div>
-        </div>
+          {/* TAB 4: CLP FOR CANDLES */}
+          {activeTab === 'clp' && (
+            <div className="glass-panel p-6 rounded-2xl bg-white border border-slate-200 space-y-4 shadow-sm">
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <Flame className="w-5 h-5 text-amber-500" />
+                Étiquette CLP & Conseils Sécurité AFNOR (Bougies / Senteurs)
+              </h2>
+              <div className="p-4 bg-slate-900 text-white rounded-xl space-y-2 font-mono text-xs">
+                <div className="text-amber-400 font-bold uppercase text-[11px]">Pictogrammes requis : GHS07 (Sensibilisant), GHS09 (Environnement)</div>
+                <p>H317 : Peut provoquer une allergie cutanée.</p>
+                <p>P102 : Tenir hors de portée des enfants.</p>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

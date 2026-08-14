@@ -216,4 +216,20 @@ export interface Order {
   created_at: string;
 }
 
+export type CleaningActionType = 'cleaning' | 'disinfection' | 'deep_clean' | 'maintenance';
+
+export interface CleaningLog {
+  id: string;
+  organisation_id: string;
+  date: string; // YYYY-MM-DD
+  time?: string; // HH:MM
+  zone: string; // e.g. "Plan de travail principal", "Moules à savon & découpeuse", "Cuve de saponification"
+  action_type: CleaningActionType;
+  product_used: string; // e.g. "Alcool isopropylique 70%", "Désinfectant cosmétique ISO 22716"
+  operator: string; // e.g. "Thomas Laurent"
+  status: 'completed' | 'verified';
+  notes?: string;
+  created_at: string;
+}
+
 

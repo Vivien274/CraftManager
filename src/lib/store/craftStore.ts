@@ -19,6 +19,8 @@ import {
   OrderStatus,
   PaymentStatus,
   PlanTier,
+  CleaningLog,
+  CleaningActionType,
 } from '../types/craft';
 import { createClient } from '../supabase/client';
 
@@ -103,6 +105,48 @@ const DEFAULT_PRODUCTS: Product[] = [
   },
 ];
 
+const DEFAULT_CLEANING_LOGS: CleaningLog[] = [
+  {
+    id: 'clean-1',
+    organisation_id: 'org-1',
+    date: new Date().toISOString().split('T')[0],
+    time: '08:30',
+    zone: 'Plan de travail principal & pesée',
+    action_type: 'disinfection',
+    product_used: 'Alcool isopropylique 70%',
+    operator: 'Thomas Laurent',
+    status: 'verified',
+    notes: 'Désinfection complète avant pesée des huiles et poudres.',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'clean-2',
+    organisation_id: 'org-1',
+    date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+    time: '17:15',
+    zone: 'Moules à savon & Découpeuse inox',
+    action_type: 'cleaning',
+    product_used: 'Savon noir bio & Eau chaude 60°C',
+    operator: 'Thomas Laurent',
+    status: 'completed',
+    notes: 'Lavage et dégraissage après coulée lot #SAV-2026-042.',
+    created_at: new Date(Date.now() - 86400000).toISOString(),
+  },
+  {
+    id: 'clean-3',
+    organisation_id: 'org-1',
+    date: new Date(Date.now() - 86400000 * 3).toISOString().split('T')[0],
+    time: '14:00',
+    zone: 'Sol atelier & Étagères de cure 28j',
+    action_type: 'deep_clean',
+    product_used: 'Détergent désinfectant surodorant ISO 22716',
+    operator: 'Thomas Laurent',
+    status: 'verified',
+    notes: 'Grand nettoyage hebdomadaire du local de cure et aération.',
+    created_at: new Date(Date.now() - 86400000 * 3).toISOString(),
+  },
+];
+
 export function useCraftStore() {
   const [organisation, setOrganisation] = useState<Organisation>(DEFAULT_ORG);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
@@ -114,6 +158,7 @@ export function useCraftStore() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [clients, setClients] = useState<Client[]>(DEFAULT_CLIENTS);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [cleaningLogs, setCleaningLogs] = useState<CleaningLog[]>(DEFAULT_CLEANING_LOGS);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -138,6 +183,7 @@ export function useCraftStore() {
         const savedExpenses = localStorage.getItem('craft_expenses');
         const savedClients = localStorage.getItem('craft_clients');
         const savedOrders = localStorage.getItem('craft_orders');
+        const savedCleaning = localStorage.getItem('craft_cleaning_logs');
 
         if (savedOrg) {
           const parsedOrg = JSON.parse(savedOrg);
@@ -158,6 +204,7 @@ export function useCraftStore() {
         if (savedExpenses) setExpenses(JSON.parse(savedExpenses));
         if (savedClients) setClients(JSON.parse(savedClients));
         if (savedOrders) setOrders(JSON.parse(savedOrders));
+        if (savedCleaning) setCleaningLogs(JSON.parse(savedCleaning));
 
         // 2. If User is authenticated in Supabase, fetch Cloud Data
         if (user) {
@@ -1053,6 +1100,41 @@ export function useCraftStore() {
       return false;
     }
   };
+  const addCleaningLog = (log: Omit<CleaningLog, 'id' | 'organisation_id' | 'created_at'>) => {
+    const newLog: CleaningLog = {
+      ...log,
+      id: `clean-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      organisation_id: organisation.id,
+      created_at: new Date().toISOString(),
+    };
+    const updated = [newLog, ...cleaningLogs];
+    setCleaningLogs(updated);
+    localStorage.setItem('craft_cleaning_logs', JSON.stringify(updated));
+
+    createClient()
+      .from('cleaning_logs')
+      .insert({
+        id: newLog.id,
+        organisation_id: newLog.organisation_id,
+        date: newLog.date,
+        time: newLog.time,
+        zone: newLog.zone,
+        action_type: newLog.action_type,
+        product_used: newLog.product_used,
+        operator: newLog.operator,
+        status: newLog.status,
+        notes: newLog.notes,
+      })
+      .then();
+  };
+
+  const deleteCleaningLog = (id: string) => {
+    const updated = cleaningLogs.filter((l) => l.id !== id);
+    setCleaningLogs(updated);
+    localStorage.setItem('craft_cleaning_logs', JSON.stringify(updated));
+
+    createClient().from('cleaning_logs').delete().eq('id', id).then();
+  };
 
   return {
     isLoaded,
@@ -1066,6 +1148,7 @@ export function useCraftStore() {
     expenses,
     clients,
     orders,
+    cleaningLogs,
     cart,
     updateOrganisation,
     importTraceabilitySeed,
@@ -1091,6 +1174,8 @@ export function useCraftStore() {
     updateOrderStatus,
     updateOrderPaymentStatus,
     deleteOrder,
+    addCleaningLog,
+    deleteCleaningLog,
     addToCart,
     updateCartQuantity,
     clearCart,

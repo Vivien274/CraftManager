@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
 export async function POST(request: Request) {
   try {
@@ -12,6 +13,8 @@ export async function POST(request: Request) {
       organisationName,
       siret,
       vatMention,
+      resendApiKey,
+      resendFromEmail,
     } = body;
 
     if (!clientEmail || !orderNumber) {
@@ -25,19 +28,19 @@ export async function POST(request: Request) {
 
     // Generate complete formatted HTML Email content
     const htmlBody = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; rounded: 12px; color: #1e293b;">
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; color: #1e293b; background-color: #ffffff;">
         <h2 style="color: #4f46e5; margin-top: 0;">${orgName}</h2>
         <p style="font-size: 14px;">Bonjour <strong>${clientName || 'Client'}</strong>,</p>
-        <p style="font-size: 14px;">Veuillez trouver ci-joint votre facture <strong>${orderNumber}</strong> d'un montant de <strong>${totalAmount} €</strong>.</p>
+        <p style="font-size: 14px;">Veuillez trouver ci-joint les détails de votre facture <strong>${orderNumber}</strong> d'un montant de <strong>${totalAmount} €</strong>.</p>
         
-        <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <div style="background-color: #f8fafc; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #cbd5e1;">
           <h3 style="margin-top: 0; font-size: 14px; color: #334155;">Récapitulatif de votre commande :</h3>
           <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
             <thead>
               <tr style="border-bottom: 2px solid #cbd5e1; text-align: left;">
                 <th style="padding: 8px 0;">Produit</th>
                 <th style="padding: 8px 0; text-align: center;">Qté</th>
-                <th style="padding: 8px 0; text-align: right;">Total</th>
+                <th style="padding: 8px 0; text-align: right;">Total TTC</th>
               </tr>
             </thead>
             <tbody>
@@ -63,7 +66,7 @@ export async function POST(request: Request) {
           </p>
         </div>
 
-        <p style="font-size: 11px; color: #64748b; font-style: italic;">
+        <p style="font-size: 11px; color: #64748b; font-style: italic; text-align: right;">
           ${vatMention || 'TVA non applicable, art. 293 B du CGI'}
         </p>
 
@@ -76,43 +79,49 @@ export async function POST(request: Request) {
       </div>
     `;
 
-    // 1. Try Resend API if API Key is configured
-    if (process.env.RESEND_API_KEY) {
+    const apiKey = resendApiKey || process.env.RESEND_API_KEY;
+    const fromEmail = resendFromEmail || process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+
+    // 1. Send via Resend API if API key exists
+    if (apiKey && apiKey.startsWith('re_')) {
       try {
-        const resendRes = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-          },
-          body: JSON.stringify({
-            from: `${orgName} <facture@craftmanager.app>`,
-            to: [clientEmail],
-            subject: `Facture ${orderNumber} — ${orgName}`,
-            html: htmlBody,
-          }),
+        const resend = new Resend(apiKey);
+        const sender = fromEmail.includes('<') ? fromEmail : `${orgName} <${fromEmail}>`;
+
+        const { data, error } = await resend.emails.send({
+          from: sender,
+          to: [clientEmail],
+          subject: `Facture N° ${orderNumber} — ${orgName}`,
+          html: htmlBody,
         });
 
-        if (resendRes.ok) {
-          return NextResponse.json({
-            success: true,
-            provider: 'resend',
-            message: `Facture ${orderNumber} transmise par email à ${clientEmail} via le service direct.`,
-            recipient: clientEmail,
-          });
+        if (error) {
+          throw new Error(error.message);
         }
-      } catch (e) {
+
+        return NextResponse.json({
+          success: true,
+          provider: 'resend',
+          message: `Facture ${orderNumber} transmise avec succès à ${clientEmail} via Resend !`,
+          recipient: clientEmail,
+          data,
+        });
+      } catch (e: any) {
         console.error('[API send-invoice] Resend direct failed:', e);
+        return NextResponse.json(
+          { error: `Échec d'envoi via Resend : ${e.message || 'Vérifiez la clé API ou l’adresse expéditeur.'}` },
+          { status: 400 }
+        );
       }
     }
 
-    // 2. Default fallback response (simulated + mailto/download ready)
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    // 2. Default fallback mode (Prompt user to add Resend key in Settings or use App Mail / HTML download)
+    await new Promise((resolve) => setTimeout(resolve, 400));
 
     return NextResponse.json({
       success: true,
       provider: 'mailto_fallback',
-      message: `La facture ${orderNumber} (${totalAmount} €) a été préparée pour ${clientEmail}. Vous pouvez l'envoyer via votre logiciel de messagerie ou télécharger le fichier PDF / HTML.`,
+      message: `La facture ${orderNumber} (${totalAmount} €) a été préparée pour ${clientEmail}. (Ajoutez une clé Resend dans les Réglages ⚙️ pour l'envoi direct automatique).`,
       recipient: clientEmail,
       orderNumber,
       htmlBody,

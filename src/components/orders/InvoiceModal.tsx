@@ -75,6 +75,8 @@ export function InvoiceModal({
           organisationName: organisation.name,
           siret: organisation.siret,
           vatMention: vatMention,
+          resendApiKey: organisation.resend_api_key,
+          resendFromEmail: organisation.resend_from_email,
         }),
       });
 

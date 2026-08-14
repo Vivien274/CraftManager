@@ -24,6 +24,8 @@ export interface Organisation {
   email?: string;
   vat_mode?: VatMode;
   vat_custom_mention?: string;
+  resend_api_key?: string;
+  resend_from_email?: string;
   created_at: string;
 }
 

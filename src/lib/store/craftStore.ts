@@ -57,12 +57,51 @@ const DEFAULT_CLIENTS: Client[] = [
   },
 ];
 
+const DEFAULT_PRODUCTS: Product[] = [
+  {
+    id: 'prod-demo-1',
+    organisation_id: 'org-1',
+    name: 'Savon Bio Lavande & Miel 100g',
+    category: 'Savons',
+    selling_price: 6.50,
+    packaging_cost: 0.50,
+    extra_costs: 0.20,
+    curing_days: 28,
+    stock_quantity: 45,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'prod-demo-2',
+    organisation_id: 'org-1',
+    name: 'Baume À Lèvres Cire d’Abeille 15g',
+    category: 'Baumes',
+    selling_price: 5.00,
+    packaging_cost: 0.40,
+    extra_costs: 0.10,
+    curing_days: 0,
+    stock_quantity: 60,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'prod-demo-3',
+    organisation_id: 'org-1',
+    name: 'Bougie Parfumée Fleur d’Oranger',
+    category: 'Bougies',
+    selling_price: 14.90,
+    packaging_cost: 1.20,
+    extra_costs: 0.50,
+    curing_days: 3,
+    stock_quantity: 20,
+    created_at: new Date().toISOString(),
+  },
+];
+
 export function useCraftStore() {
   const [organisation, setOrganisation] = useState<Organisation>(DEFAULT_ORG);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [rawMaterials, setRawMaterials] = useState<RawMaterial[]>([]);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(DEFAULT_PRODUCTS);
   const [batches, setBatches] = useState<ProductionBatch[]>([]);
   const [sales, setSales] = useState<Sale[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -96,7 +135,12 @@ export function useCraftStore() {
         if (savedSuppliers) setSuppliers(JSON.parse(savedSuppliers));
         if (savedRM) setRawMaterials(JSON.parse(savedRM));
         if (savedRecipes) setRecipes(JSON.parse(savedRecipes));
-        if (savedProducts) setProducts(JSON.parse(savedProducts));
+        if (savedProducts) {
+          const parsed = JSON.parse(savedProducts);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setProducts(parsed);
+          }
+        }
         if (savedBatches) setBatches(JSON.parse(savedBatches));
         if (savedSales) setSales(JSON.parse(savedSales));
         if (savedExpenses) setExpenses(JSON.parse(savedExpenses));

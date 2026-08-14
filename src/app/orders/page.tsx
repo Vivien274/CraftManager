@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   ClipboardList,
   Plus,
@@ -20,14 +20,19 @@ import {
   Edit,
   X,
   AlertCircle,
+  FileText,
+  Mail,
+  Send,
 } from 'lucide-react';
 import { useCraftStore } from '@/lib/store/craftStore';
 import { formatCurrency } from '@/lib/utils/calculator';
-import { OrderStatus, PaymentStatus, ClientType } from '@/lib/types/craft';
+import { OrderStatus, PaymentStatus, ClientType, Order } from '@/lib/types/craft';
+import { InvoiceModal } from '@/components/orders/InvoiceModal';
 
 export default function OrdersPage() {
   const {
     isLoaded,
+    organisation,
     products,
     clients,
     orders,
@@ -51,6 +56,10 @@ export default function OrdersPage() {
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
   const [editingClientId, setEditingClientId] = useState<string | null>(null);
 
+  // Invoice Modal State
+  const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
+  const [selectedInvoiceOrder, setSelectedInvoiceOrder] = useState<Order | null>(null);
+
   // New Client Form
   const [clientName, setClientName] = useState('');
   const [clientCompany, setClientCompany] = useState('');
@@ -62,6 +71,8 @@ export default function OrdersPage() {
 
   // New Order Form
   const [selectedClientId, setSelectedClientId] = useState('');
+  const [orderClientEmail, setOrderClientEmail] = useState('');
+  const [autoSendInvoice, setAutoSendInvoice] = useState(true);
   const [orderDeliveryDate, setOrderDeliveryDate] = useState('');
   const [orderStatus, setOrderStatus] = useState<OrderStatus>('pending');
   const [orderPaymentStatus, setOrderPaymentStatus] = useState<PaymentStatus>('unpaid');
@@ -70,6 +81,16 @@ export default function OrdersPage() {
     { product_id: string; quantity: number; unit_price: number }[]
   >([]);
   const [formError, setFormError] = useState('');
+
+  // Sync client email when client selection changes in Order Modal
+  useEffect(() => {
+    if (selectedClientId) {
+      const c = clients.find((cli) => cli.id === selectedClientId);
+      if (c && c.email) {
+        setOrderClientEmail(c.email);
+      }
+    }
+  }, [selectedClientId, clients]);
 
   if (!isLoaded) {
     return (
@@ -162,14 +183,21 @@ export default function OrdersPage() {
 
   // Handle Order Item Form Helper
   const handleAddOrderItem = () => {
-    if (products.length === 0) return;
-    const defaultProd = products[0];
+    if (products.length === 0) {
+      setFormError("Aucun produit dans le catalogue. Veuillez d'abord créer un produit.");
+      return;
+    }
+    setFormError('');
+    // Try picking a product that isn't already added
+    const unusedProduct =
+      products.find((p) => !orderItems.some((item) => item.product_id === p.id)) || products[0];
+
     setOrderItems((prev) => [
       ...prev,
       {
-        product_id: defaultProd.id,
+        product_id: unusedProduct.id,
         quantity: 10,
-        unit_price: defaultProd.selling_price,
+        unit_price: unusedProduct.selling_price || 0,
       },
     ]);
   };
@@ -186,7 +214,7 @@ export default function OrdersPage() {
           ? {
               ...item,
               product_id: productId,
-              unit_price: prod ? prod.selling_price : item.unit_price,
+              unit_price: prod ? Number(prod.selling_price) : item.unit_price,
             }
           : item
       )
@@ -224,6 +252,14 @@ export default function OrdersPage() {
       return;
     }
 
+    // If client email was entered or updated in the form, update client details
+    if (selectedClientId && orderClientEmail) {
+      const curClient = clients.find((c) => c.id === selectedClientId);
+      if (curClient && curClient.email !== orderClientEmail) {
+        await updateClient(selectedClientId, { email: orderClientEmail });
+      }
+    }
+
     const orderNumber = `CMD-2026-${String(orders.length + 1).padStart(3, '0')}`;
     const totalAmount = calculateOrderFormTotal();
 
@@ -236,7 +272,7 @@ export default function OrdersPage() {
       unit_price: Number(it.unit_price),
     }));
 
-    await addOrder({
+    const newOrderData = {
       order_number: orderNumber,
       client_id: selectedClientId,
       status: orderStatus,
@@ -245,14 +281,50 @@ export default function OrdersPage() {
       total_amount: totalAmount,
       notes: orderNotes,
       items: formattedItems,
-    });
+    };
+
+    await addOrder(newOrderData);
+
+    const fullCreatedOrder: Order = {
+      id: `ord-${Date.now()}`,
+      organisation_id: organisation.id,
+      ...newOrderData,
+      created_at: new Date().toISOString(),
+    };
 
     setIsOrderModalOpen(false);
+
+    // Auto-send invoice if checked
+    if (autoSendInvoice && orderClientEmail) {
+      try {
+        await fetch('/api/send-invoice', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            clientEmail: orderClientEmail,
+            clientName: clients.find((c) => c.id === selectedClientId)?.name || 'Client',
+            orderNumber,
+            totalAmount,
+            items: formattedItems,
+            organisationName: organisation.name,
+          }),
+        });
+      } catch (err) {
+        console.error('Error auto-sending invoice:', err);
+      }
+
+      // Open invoice modal for confirmation/printing
+      setSelectedInvoiceOrder(fullCreatedOrder);
+      setIsInvoiceModalOpen(true);
+    }
+
     resetOrderForm();
   };
 
   const resetOrderForm = () => {
     setSelectedClientId('');
+    setOrderClientEmail('');
+    setAutoSendInvoice(true);
     setOrderDeliveryDate('');
     setOrderStatus('pending');
     setOrderPaymentStatus('unpaid');
@@ -265,13 +337,14 @@ export default function OrdersPage() {
     resetOrderForm();
     if (clients.length > 0) {
       setSelectedClientId(clients[0].id);
+      setOrderClientEmail(clients[0].email || '');
     }
     if (products.length > 0) {
       setOrderItems([
         {
           product_id: products[0].id,
           quantity: 10,
-          unit_price: products[0].selling_price,
+          unit_price: products[0].selling_price || 0,
         },
       ]);
     }
@@ -586,7 +659,7 @@ export default function OrdersPage() {
                           <label className="block text-[10px] font-bold uppercase text-slate-500">
                             Changer le statut de la commande :
                           </label>
-                          <div className="flex gap-1.5">
+                          <div className="flex items-center gap-1.5">
                             <select
                               value={ord.status}
                               onChange={(e) => updateOrderStatus(ord.id, e.target.value as OrderStatus)}
@@ -599,9 +672,20 @@ export default function OrdersPage() {
                               <option value="cancelled">🔴 Annulée</option>
                             </select>
                             <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedInvoiceOrder(ord);
+                                setIsInvoiceModalOpen(true);
+                              }}
+                              title="Voir / Envoyer la Facture par email"
+                              className="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-lg text-xs flex items-center gap-1 border border-indigo-200 shrink-0 transition"
+                            >
+                              <FileText className="w-3.5 h-3.5" /> Facture
+                            </button>
+                            <button
                               onClick={() => deleteOrder(ord.id)}
                               title="Supprimer la commande"
-                              className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg transition"
+                              className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg shrink-0 transition"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -889,9 +973,9 @@ export default function OrdersPage() {
               </div>
             ) : (
               <form onSubmit={handleSaveOrder} className="space-y-4 text-xs">
-                {/* 1. Client / Boutique */}
-                <div>
-                  <label className="block text-slate-800 font-bold mb-1">1. Pour quel client / boutique ? *</label>
+                {/* 1. Client / Boutique & Email */}
+                <div className="space-y-2">
+                  <label className="block text-slate-800 font-bold">1. Pour quel client / boutique ? *</label>
                   <select
                     required
                     value={selectedClientId}
@@ -904,6 +988,20 @@ export default function OrdersPage() {
                       </option>
                     ))}
                   </select>
+
+                  <div>
+                    <label className="block text-slate-700 font-semibold mb-1 text-[11px] flex items-center gap-1">
+                      <Mail className="w-3.5 h-3.5 text-indigo-600" />
+                      Email du client (pour l'envoi de la facture)
+                    </label>
+                    <input
+                      type="email"
+                      value={orderClientEmail}
+                      onChange={(e) => setOrderClientEmail(e.target.value)}
+                      placeholder="ex: client@domaine.fr"
+                      className="glass-input w-full text-xs font-medium bg-white"
+                    />
+                  </div>
                 </div>
 
                 {/* 2. Produits et quantité */}
@@ -912,18 +1010,38 @@ export default function OrdersPage() {
                     <label className="block text-slate-800 font-bold text-xs">
                       2. Produits & Quantités *
                     </label>
-                    <button
-                      type="button"
-                      onClick={handleAddOrderItem}
-                      className="text-indigo-600 font-bold hover:text-indigo-800 text-xs flex items-center gap-1"
-                    >
-                      <Plus className="w-3.5 h-3.5" /> Ajouter un produit
-                    </button>
+                    {products.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={handleAddOrderItem}
+                        className="text-indigo-600 font-bold hover:text-indigo-800 text-xs flex items-center gap-1 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1 rounded-lg border border-indigo-200 transition"
+                      >
+                        <Plus className="w-3.5 h-3.5" /> Ajouter un produit
+                      </button>
+                    )}
                   </div>
 
-                  {orderItems.length === 0 ? (
-                    <div className="text-center py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 text-xs">
-                      Aucun produit ajouté. Cliquez sur "+ Ajouter un produit".
+                  {products.length === 0 ? (
+                    <div className="p-4 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs space-y-2">
+                      <p className="font-bold">⚠️ Aucun produit disponible dans votre catalogue</p>
+                      <p>Veuillez d'abord créer au moins un produit pour pouvoir ajouter des articles à la commande.</p>
+                      <a
+                        href="/products"
+                        className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition"
+                      >
+                        + Aller aux Produits
+                      </a>
+                    </div>
+                  ) : orderItems.length === 0 ? (
+                    <div className="text-center py-6 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 text-xs space-y-2">
+                      <p>Aucun produit ajouté à la commande.</p>
+                      <button
+                        type="button"
+                        onClick={handleAddOrderItem}
+                        className="bg-indigo-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs inline-flex items-center gap-1 shadow-sm"
+                      >
+                        <Plus className="w-3.5 h-3.5" /> Ajouter un produit
+                      </button>
                     </div>
                   ) : (
                     <div className="space-y-2">
@@ -940,7 +1058,7 @@ export default function OrdersPage() {
                             >
                               {products.map((p) => (
                                 <option key={p.id} value={p.id}>
-                                  {p.name} (Stock: {p.stock_quantity})
+                                  {p.name} ({formatCurrency(p.selling_price)})
                                 </option>
                               ))}
                             </select>
@@ -990,6 +1108,24 @@ export default function OrdersPage() {
                   <span className="text-xl font-black text-indigo-700">
                     {formatCurrency(calculateOrderFormTotal())}
                   </span>
+                </div>
+
+                {/* Option Envoi Automatique de Facture par Email */}
+                <div className="p-3 bg-indigo-50/80 border border-indigo-200 rounded-xl flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="autoSendInvoice"
+                    checked={autoSendInvoice}
+                    onChange={(e) => setAutoSendInvoice(e.target.checked)}
+                    className="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer"
+                  />
+                  <label
+                    htmlFor="autoSendInvoice"
+                    className="text-xs font-bold text-indigo-950 cursor-pointer flex items-center gap-1.5"
+                  >
+                    <Mail className="w-4 h-4 text-indigo-600 shrink-0" />
+                    Envoyer automatiquement la facture par email au client lors de la validation
+                  </label>
                 </div>
 
                 {/* 4. Indiquer si payé ou non */}
@@ -1060,6 +1196,23 @@ export default function OrdersPage() {
             )}
           </div>
         </div>
+      )}
+
+      {/* INVOICE PREVIEW & EMAIL MODAL */}
+      {selectedInvoiceOrder && (
+        <InvoiceModal
+          order={selectedInvoiceOrder}
+          client={clients.find((c) => c.id === selectedInvoiceOrder.client_id)}
+          organisation={organisation}
+          isOpen={isInvoiceModalOpen}
+          onClose={() => {
+            setIsInvoiceModalOpen(false);
+            setSelectedInvoiceOrder(null);
+          }}
+          onEmailUpdated={(newEmail) => {
+            updateClient(selectedInvoiceOrder.client_id, { email: newEmail });
+          }}
+        />
       )}
     </div>
   );

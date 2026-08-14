@@ -340,8 +340,8 @@ function POSContent() {
               )}
             </div>
           ) : (
-            /* Touch-Friendly Product Cards Grid */
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            /* Touch-Friendly Spacious Product Cards Grid (2 Columns) */
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {filteredProducts.map((product) => {
                 const inCartQty = getCartQuantityForProduct(product.id);
                 const isOutOfStock = product.stock_quantity <= 0;
@@ -350,7 +350,7 @@ function POSContent() {
                   <div
                     key={product.id}
                     onClick={() => !isOutOfStock && addToCart(product)}
-                    className={`bg-white rounded-3xl p-5 border transition-all duration-200 text-left flex flex-col justify-between relative overflow-hidden group cursor-pointer shadow-sm ${
+                    className={`bg-white rounded-3xl p-4 sm:p-5 border transition-all duration-200 text-left flex flex-col justify-between relative overflow-hidden group cursor-pointer shadow-sm ${
                       inCartQty > 0
                         ? 'border-amber-400 ring-2 ring-amber-400/30 bg-amber-50/20 shadow-md'
                         : 'border-slate-200 hover:border-indigo-400 hover:shadow-lg hover:-translate-y-0.5'
@@ -364,9 +364,9 @@ function POSContent() {
                     )}
 
                     <div className="space-y-3">
-                      {/* Top Row: Image Thumbnail & Stock Pill */}
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="w-16 h-16 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center shadow-2xs">
+                      {/* Top Row: Image & Metadata */}
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-16 h-16 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center shadow-xs">
                           {product.image_url ? (
                             <img
                               src={product.image_url}
@@ -378,39 +378,35 @@ function POSContent() {
                           )}
                         </div>
 
-                        <div className="flex flex-col items-end gap-1">
-                          <span
-                            className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border ${
-                              product.stock_quantity > 10
-                                ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                                : product.stock_quantity > 0
-                                ? 'bg-amber-50 text-amber-900 border-amber-200'
-                                : 'bg-red-50 text-red-700 border-red-200'
-                            }`}
-                          >
-                            {product.stock_quantity > 0 ? `Stock : ${product.stock_quantity}` : 'Rupture'}
-                          </span>
-                          <span className="text-[10px] uppercase font-extrabold text-slate-400 tracking-wider">
-                            {product.category}
-                          </span>
-                        </div>
-                      </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1 flex-wrap">
+                            <span
+                              className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${
+                                product.stock_quantity > 10
+                                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                                  : product.stock_quantity > 0
+                                  ? 'bg-amber-50 text-amber-900 border-amber-200'
+                                  : 'bg-red-50 text-red-700 border-red-200'
+                              }`}
+                            >
+                              {product.stock_quantity > 0 ? `Stock : ${product.stock_quantity}` : 'Rupture'}
+                            </span>
+                            <span className="text-[10px] uppercase font-black text-slate-400 tracking-wider truncate">
+                              {product.category}
+                            </span>
+                          </div>
 
-                      {/* Middle Row: Product Name */}
-                      <div>
-                        <h3 className="font-extrabold text-slate-900 text-sm line-clamp-2 leading-snug group-hover:text-indigo-600 transition">
-                          {product.name}
-                        </h3>
-                        {product.sku && (
-                          <span className="text-[10px] font-mono text-slate-400 block mt-0.5">{product.sku}</span>
-                        )}
+                          <h3 className="font-extrabold text-slate-900 text-sm leading-snug line-clamp-2 group-hover:text-indigo-600 transition">
+                            {product.name}
+                          </h3>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Bottom Row: Price & Add Action Button */}
-                    <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between mt-3">
-                      <div>
-                        <span className="text-emerald-700 font-black text-lg">
+                    {/* Bottom Row: Large Price & Add Button */}
+                    <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between mt-3 gap-2">
+                      <div className="shrink-0">
+                        <span className="text-emerald-700 font-black text-lg sm:text-xl whitespace-nowrap block">
                           {formatCurrency(product.selling_price)}
                         </span>
                       </div>
@@ -418,7 +414,7 @@ function POSContent() {
                       <button
                         type="button"
                         disabled={isOutOfStock}
-                        className={`px-3.5 py-2 rounded-xl text-xs font-black flex items-center gap-1 shadow-sm transition ${
+                        className={`px-4 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 shadow-sm transition whitespace-nowrap cursor-pointer ${
                           inCartQty > 0
                             ? 'bg-amber-500 text-slate-950 hover:bg-amber-400'
                             : 'bg-indigo-600 text-white hover:bg-indigo-500'

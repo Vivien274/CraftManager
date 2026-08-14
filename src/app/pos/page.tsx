@@ -52,6 +52,7 @@ function POSContent() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedChannel, setSelectedChannel] = useState<SaleChannel>('market');
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>('cash');
+  const [terminalType, setTerminalType] = useState<'sumup' | 'mypos' | 'zettle'>('sumup');
   const [givenAmount, setGivenAmount] = useState<number>(0);
   const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
   const [lastCompletedSale, setLastCompletedSale] = useState<any>(null);
@@ -436,26 +437,76 @@ function POSContent() {
             </div>
           </div>
 
-          {/* SumUp / TPE Quick Trigger Banner */}
+          {/* SumUp / myPOS / Zettle TPE Quick Trigger Banner */}
           {selectedPayment === 'card' && cartTotal > 0 && (
-            <div className="bg-indigo-50/90 p-3 rounded-xl border border-indigo-200 space-y-2 text-xs">
+            <div className="bg-indigo-50/90 p-3.5 rounded-2xl border border-indigo-200 space-y-3 text-xs">
               <div className="flex items-center justify-between">
                 <span className="font-extrabold text-indigo-950 flex items-center gap-1.5 text-[11px]">
-                  📱 Connexion Terminal TPE :
+                  📱 Terminal TPE Connecté :
                 </span>
                 <span className="text-[10px] font-bold bg-indigo-200 text-indigo-900 px-2 py-0.5 rounded-full">
-                  Zéro Config
+                  Zéro Config ⚡
                 </span>
               </div>
+
+              {/* Brand Selector Buttons */}
+              <div className="grid grid-cols-3 gap-1 bg-white p-1 rounded-xl border border-indigo-100 font-bold text-[11px]">
+                <button
+                  onClick={() => setTerminalType('sumup')}
+                  className={`py-1.5 px-2 rounded-lg text-center transition cursor-pointer ${
+                    terminalType === 'sumup' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  SumUp
+                </button>
+                <button
+                  onClick={() => setTerminalType('mypos')}
+                  className={`py-1.5 px-2 rounded-lg text-center transition cursor-pointer ${
+                    terminalType === 'mypos' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  myPOS
+                </button>
+                <button
+                  onClick={() => setTerminalType('zettle')}
+                  className={`py-1.5 px-2 rounded-lg text-center transition cursor-pointer ${
+                    terminalType === 'zettle' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  Zettle
+                </button>
+              </div>
+
               <p className="text-[11px] text-slate-600 leading-snug">
-                En appuyant sur Valider, le montant de <strong>{formatCurrency(cartTotal)}</strong> sera transmis directement à votre lecteur SumUp / TPE.
+                Transmet automatiquement <strong>{formatCurrency(cartTotal)}</strong> vers votre lecteur {terminalType === 'sumup' ? 'SumUp' : terminalType === 'mypos' ? 'myPOS' : 'Zettle par PayPal'}.
               </p>
-              <a
-                href={`sumupmerchant://pay/v1?amount=${cartTotal}&currency=EUR&title=Facture_CraftManager`}
-                className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 transition cursor-pointer shadow-xs block text-center"
-              >
-                ⚡ Déclencher SumUp ({formatCurrency(cartTotal)}) ↗
-              </a>
+
+              {terminalType === 'sumup' && (
+                <a
+                  href={`sumupmerchant://pay/v1?amount=${cartTotal}&currency=EUR&title=Savonnerie_CraftManager`}
+                  className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 transition cursor-pointer shadow-sm block text-center"
+                >
+                  ⚡ Payer {formatCurrency(cartTotal)} sur SumUp ↗
+                </a>
+              )}
+
+              {terminalType === 'mypos' && (
+                <a
+                  href={`mypos://pay?amount=${cartTotal}&currency=EUR&title=Savonnerie_CraftManager`}
+                  className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 transition cursor-pointer shadow-sm block text-center"
+                >
+                  ⚡ Payer {formatCurrency(cartTotal)} sur myPOS ↗
+                </a>
+              )}
+
+              {terminalType === 'zettle' && (
+                <a
+                  href={`zettle://pay?amount=${cartTotal}&currency=EUR&title=Savonnerie_CraftManager`}
+                  className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 transition cursor-pointer shadow-sm block text-center"
+                >
+                  ⚡ Payer {formatCurrency(cartTotal)} sur Zettle ↗
+                </a>
+              )}
             </div>
           )}
 

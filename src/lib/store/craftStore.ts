@@ -233,11 +233,30 @@ export function useCraftStore() {
     }
 
     loadData();
+
+    const handleStoreSync = () => {
+      const savedOrg = localStorage.getItem('craft_org');
+      if (savedOrg) {
+        try {
+          setOrganisation(JSON.parse(savedOrg));
+        } catch (e) {}
+      }
+    };
+
+    window.addEventListener('craft_store_changed', handleStoreSync);
+    window.addEventListener('storage', handleStoreSync);
+    return () => {
+      window.removeEventListener('craft_store_changed', handleStoreSync);
+      window.removeEventListener('storage', handleStoreSync);
+    };
   }, []);
 
   const saveOrganisation = (newOrg: Organisation) => {
     setOrganisation(newOrg);
     localStorage.setItem('craft_org', JSON.stringify(newOrg));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('craft_store_changed'));
+    }
   };
 
   const updateOrganisation = async (updates: Partial<Organisation>) => {

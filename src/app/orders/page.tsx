@@ -28,6 +28,7 @@ import { useCraftStore } from '@/lib/store/craftStore';
 import { formatCurrency } from '@/lib/utils/calculator';
 import { OrderStatus, PaymentStatus, ClientType, Order } from '@/lib/types/craft';
 import { InvoiceModal } from '@/components/orders/InvoiceModal';
+import FeatureGate from '@/components/common/FeatureGate';
 
 export default function OrdersPage() {
   const {
@@ -369,7 +370,13 @@ export default function OrdersPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <FeatureGate
+      feature="orders"
+      requiredTier="pro"
+      title="Carnet de Commandes B2B & B2C"
+      description="La gestion des commandes clients et le suivi des factures font partie de l'offre Artisan Pro. Surclassez votre atelier pour y accéder."
+    >
+      <div className="space-y-6">
       {/* Top Banner Header */}
       <div className="glass-panel p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white shadow-sm border border-slate-200">
         <div>
@@ -1199,5 +1206,6 @@ export default function OrdersPage() {
         />
       )}
     </div>
+    </FeatureGate>
   );
 }
